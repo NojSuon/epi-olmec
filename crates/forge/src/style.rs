@@ -90,7 +90,7 @@ impl Pen {
         let w = 2.0 * half;
         match style {
             Style::Sans => Pen { style, wv: w * 1.9, wh: w * 1.9 },
-            Style::Playful => Pen { style, wv: w * 2.5, wh: w * 2.5 },
+            Style::Playful => Pen { style, wv: w * 2.7, wh: w * 2.7 },
             Style::Formal => Pen { style, wv: w * 2.5, wh: w * 0.8 },
         }
     }
@@ -183,7 +183,13 @@ fn stroke(line: &Line, pen: &Pen, out: &mut Vec<Contour>) {
         base.pop();
     }
     let closed = line.closed && base.len() > 2;
-    let pts = if pen.style == Style::Playful { chaikin(&base, closed, 2) } else { soften(&base, closed, 2) };
+    let pts = match pen.style {
+        // Hand feel: nudge the corners a little, then smooth.
+        Style::Playful => chaikin(&base.iter().map(|&p| wobble(p, pen.wv * 0.3)).collect::<Vec<_>>(), closed, 2),
+        // Linear: only horizontal, vertical and 45° strokes.
+        Style::Sans => octilinear(&crate::vector::simplify(&base, pen.wv * 0.45, closed), closed),
+        Style::Formal => soften(&base, closed, 2),
+    };
     let n = pts.len();
     if n == 0 {
         return;
@@ -195,12 +201,7 @@ fn stroke(line: &Line, pen: &Pen, out: &mut Vec<Contour>) {
     let segs = if closed { n } else { n - 1 };
     match pen.style {
         Style::Sans => sans_stroke(&pts, closed, pen.wv, out),
-        Style::Playful => {
-            // A round pen: every segment is a capsule.
-            for i in 0..segs {
-                out.push(capsule(pts[i], pts[(i + 1) % n], pen.wv / 2.0));
-            }
-        }
+        Style::Playful => brush(&pts, closed, pen.wv, out),
         Style::Formal => {
             // A flat, wide pen held level: horizontals come out thin and
             // verticals thick, with square corners.
@@ -225,30 +226,57 @@ fn stroke(line: &Line, pen: &Pen, out: &mut Vec<Contour>) {
     }
 }
 
-/// Hull of two discs: a segment drawn with a round pen.
-fn capsule(a: P, b: P, r: f32) -> Contour {
-    let len = dist(a, b);
-    if len < 1e-3 {
-        return circle(a, r, true);
-    }
-    let ang = (b.1 - a.1).atan2(b.0 - a.0);
-    let k = 1.0 / (std::f32::consts::PI / 8.0).cos();
-    let mut c = Vec::new();
-    // Half circle around b (from +90° to −90° relative to the direction),
-    // then around a, in 45° quadratic steps; counter-clockwise, reversed below.
-    for (centre, from) in [(b, -std::f32::consts::FRAC_PI_2), (a, std::f32::consts::FRAC_PI_2)] {
-        for s in 0..4 {
-            let t = ang + from + s as f32 * std::f32::consts::FRAC_PI_4;
-            let m = t + std::f32::consts::PI / 8.0;
-            c.push(Pt { x: centre.0 + r * t.cos(), y: centre.1 + r * t.sin(), on: true });
-            c.push(Pt { x: centre.0 + r * k * m.cos(), y: centre.1 + r * k * m.sin(), on: false });
-        }
-        let t = ang + from + std::f32::consts::PI;
-        c.push(Pt { x: centre.0 + r * t.cos(), y: centre.1 + r * t.sin(), on: true });
-    }
-    c.reverse();
-    c
+/// Small repeatable "hand" offset for a point, so the same sign always comes
+/// out the same but lines are not ruler-straight.
+fn wobble(p: P, amount: f32) -> P {
+    let h = |x: f32, y: f32, k: f32| ((x * 12.9898 + y * 78.233 + k).sin() * 43758.547).fract() - 0.5;
+    let (qx, qy) = ((p.0 / 40.0).round(), (p.1 / 40.0).round());
+    (p.0 + h(qx, qy, 1.0) * amount, p.1 + h(qx, qy, 7.0) * amount)
 }
+
+/// Brush stroke for Juego: the line swells in the middle and thins toward
+/// the ends (like a loaded brush lifting off), a brush held at 30° adds
+/// some thick–thin contrast, and the path wobbles a little, as if drawn by
+/// hand. Drawn as tapered capsules (hull of two discs of different sizes).
+fn brush(pts: &[P], closed: bool, w: f32, out: &mut Vec<Contour>) {
+    let n = pts.len();
+    let pts = pts.to_vec();
+    // Cumulative length, for the swell along the stroke.
+    let mut acc = vec![0.0f32; n];
+    for i in 1..n {
+        acc[i] = acc[i - 1] + dist(pts[i - 1], pts[i]);
+    }
+    let total = if closed { acc[n - 1] + dist(pts[n - 1], pts[0]) } else { acc[n - 1] }.max(1e-3);
+    let radius = |i: usize, dir: P| {
+        let t = acc[i % n] / total;
+        let swell = if closed { 1.0 } else { 0.72 + 0.4 * (std::f32::consts::PI * t).sin() };
+        // Brush angle: strokes running at 30°/210° are thinnest.
+        let a = dir.1.atan2(dir.0) - 30f32.to_radians();
+        let angle = 0.85 + 0.25 * a.sin().abs();
+        w / 2.0 * swell * angle
+    };
+    let segs = if closed { n } else { n - 1 };
+    for i in 0..segs {
+        let (a, b) = (pts[i], pts[(i + 1) % n]);
+        let d = (b.0 - a.0, b.1 - a.1);
+        let ra = radius(i, d);
+        let rb = radius(i + 1, d);
+        out.push(tapered(a, ra, b, rb));
+    }
+}
+
+/// Convex hull of two discs with different radii.
+fn tapered(a: P, ra: f32, b: P, rb: f32) -> Contour {
+    let mut ring = Vec::with_capacity(32);
+    for (c, r) in [(a, ra), (b, rb)] {
+        for k in 0..16 {
+            let t = k as f32 * std::f32::consts::TAU / 16.0;
+            ring.push((c.0 + r * t.cos(), c.1 + r * t.sin()));
+        }
+    }
+    poly(&hull(ring), true)
+}
+
 
 /// A segment swept by an axis-aligned rectangular pen (half sizes hx, hy):
 /// the convex hull of the pen at both ends.
@@ -332,26 +360,126 @@ pub fn draw(shape: &Shape, style: Style, half: f32) -> Vec<Contour> {
     }
     for b in &shape.blobs {
         // Blob outlines already have the right orientation (outer clockwise).
-        let pts = if style == Style::Playful { chaikin(b, true, 2) } else { b.clone() };
-        out.push(pts.into_iter().map(|(x, y)| Pt { x, y, on: true }).collect());
+        let pts = match style {
+            Style::Playful => chaikin(b, true, 2),
+            Style::Sans => octilinear(&crate::vector::simplify(b, pen.wv * 0.45, true), true),
+            Style::Formal => b.clone(),
+        };
+        if pts.len() >= 3 {
+            out.push(pts.into_iter().map(|(x, y)| Pt { x, y, on: true }).collect());
+        }
     }
     for &(c, r) in &shape.dots {
-        let r = match style {
-            Style::Sans => r.max(pen.wv * 0.72),
-            Style::Playful => (r * 1.12).max(pen.wv * 0.8),
-            Style::Formal => r.max(pen.wv * 0.66),
-        };
-        out.push(circle(c, r, true));
+        match style {
+            // Linear: square dots.
+            Style::Sans => {
+                let h = r.max(pen.wv * 0.62);
+                out.push(poly(&[(c.0 - h, c.1 - h), (c.0 - h, c.1 + h), (c.0 + h, c.1 + h), (c.0 + h, c.1 - h)], true));
+            }
+            // Juego: plump, slightly squashed blobs, like a brush dab.
+            Style::Playful => {
+                let r = (r * 1.2).max(pen.wv * 0.85);
+                let c = wobble(c, pen.wv * 0.3);
+                out.push(poly(&(0..16).map(|k| { let t = k as f32 * std::f32::consts::TAU / 16.0; (c.0 + r * 1.08 * t.cos(), c.1 + r * 0.92 * t.sin()) }).collect::<Vec<_>>(), true));
+            }
+            Style::Formal => out.push(circle(c, r.max(pen.wv * 0.66), true)),
+        }
     }
     for &(c, r) in &shape.rings {
         let w = match style {
             Style::Formal => (pen.wv + pen.wh) / 2.0,
             _ => pen.wv,
         };
+        if style == Style::Playful {
+            // Juego: rings brushed like any other closed line.
+            let pts: Vec<P> = (0..20).map(|k| { let t = k as f32 * std::f32::consts::TAU / 20.0; (c.0 + r * t.cos(), c.1 + r * t.sin()) }).collect();
+            brush(&pts, true, pen.wv, &mut out);
+            continue;
+        }
+        if style == Style::Sans {
+            // Linear: rings become chamfered squares (octagons).
+            out.push(poly(&octagon(c, r + w / 2.0), true));
+            if r - w / 2.0 > w * 0.25 {
+                out.push(poly(&octagon(c, r - w / 2.0), false));
+            }
+            continue;
+        }
         out.push(circle(c, r + w / 2.0, true));
         if r - w / 2.0 > w * 0.25 {
             out.push(circle(c, r - w / 2.0, false));
         }
+    }
+    out
+}
+
+/// Square of half-size `h` with 45° chamfered corners.
+fn octagon(c: P, h: f32) -> Vec<P> {
+    let k = h * 0.42;
+    vec![
+        (c.0 - h + k, c.1 - h), (c.0 + h - k, c.1 - h), (c.0 + h, c.1 - h + k), (c.0 + h, c.1 + h - k),
+        (c.0 + h - k, c.1 + h), (c.0 - h + k, c.1 + h), (c.0 - h, c.1 + h - k), (c.0 - h, c.1 - h + k),
+    ]
+}
+
+/// Redraws a line with only horizontal, vertical and 45° segments, like a
+/// geometric display face (Orbitron, Science Gothic). Each slanted segment
+/// becomes a 45° run plus a straight run; the order is picked so the line
+/// keeps going the way it came, which turns curves into chamfered corners.
+fn octilinear(pts: &[P], closed: bool) -> Vec<P> {
+    let n = pts.len();
+    if n < 2 {
+        return pts.to_vec();
+    }
+    let snap = |d: P| -> P {
+        // Unit direction snapped to the nearest multiple of 45°.
+        let a = (d.1.atan2(d.0) / std::f32::consts::FRAC_PI_4).round() * std::f32::consts::FRAC_PI_4;
+        (a.cos(), a.sin())
+    };
+    let segs = if closed { n } else { n - 1 };
+    let mut out = vec![pts[0]];
+    let mut prev_dir: Option<P> = None;
+    for i in 0..segs {
+        let (a, b) = (*out.last().unwrap(), pts[(i + 1) % n]);
+        let (dx, dy) = (b.0 - a.0, b.1 - a.1);
+        let (ax, ay) = (dx.abs(), dy.abs());
+        if ax < 1.0 && ay < 1.0 {
+            continue;
+        }
+        let m = ax.min(ay);
+        let big = ax.max(ay);
+        // Already (close to) horizontal, vertical or diagonal: snap it.
+        if m < big * 0.2 || (big - m) < big * 0.2 {
+            let d = snap((dx, dy));
+            let p = if (d.0 * d.1).abs() > 0.1 {
+                let s = (ax + ay) / 2.0;
+                (a.0 + dx.signum() * s, a.1 + dy.signum() * s)
+            } else if d.0.abs() > 0.5 {
+                (b.0, a.1)
+            } else {
+                (a.0, b.1)
+            };
+            out.push(p);
+            prev_dir = Some(d);
+            continue;
+        }
+        // A diagonal run of length m and a straight run of the rest.
+        let diag = (a.0 + dx.signum() * m, a.1 + dy.signum() * m);
+        let straight_first = if ax > ay { (a.0 + dx.signum() * (ax - m), a.1) } else { (a.0, a.1 + dy.signum() * (ay - m)) };
+        let straight_dir = snap((straight_first.0 - a.0, straight_first.1 - a.1));
+        let diag_dir = snap((dx.signum(), dy.signum()));
+        let keep = |d: P| prev_dir.map(|p| p.0 * d.0 + p.1 * d.1).unwrap_or(0.0);
+        if keep(straight_dir) > keep(diag_dir) {
+            out.push(straight_first);
+            out.push(b);
+            prev_dir = Some(diag_dir);
+        } else {
+            out.push(diag);
+            out.push(b);
+            prev_dir = Some(straight_dir);
+        }
+    }
+    if closed && out.len() > 2 && dist(out[0], *out.last().unwrap()) < 1.0 {
+        out.pop();
     }
     out
 }

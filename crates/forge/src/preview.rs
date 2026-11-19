@@ -73,7 +73,7 @@ pub fn chart(drawn: &[(String, Vec<Contour>)], path: &Path) {
 pub fn extras(drawn: &[(String, Vec<Contour>)], path: &Path) {
     let items: Vec<_> = drawn
         .iter()
-        .filter(|d| d.0.ends_with(".alt") || !d.0.chars().any(|c| c.is_ascii_digit()) && d.0.len() > 3 || d.0.starts_with("num"))
+        .filter(|d| d.0.ends_with(".alt") || !d.0.chars().any(|c| c.is_ascii_digit()) && (d.0.len() > 3 || ["kak", "pak", "pvk", "yaj"].contains(&d.0.as_str())) || d.0.starts_with("num"))
         .map(|d| Some(&d.1))
         .collect();
     grid(&items, 8, path);

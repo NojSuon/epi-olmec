@@ -68,7 +68,12 @@ fn main() {
         }
         signs.push(Sign { name: l.name.to_string(), shape: logogram_shape(&path) });
     }
-    for n in 1..=19 {
+    // Closed-syllable signs (kak, pak, pük, yaj), drawn in K&J 2001 §1.2.
+    for s in core::CVC.iter() {
+        let path = sources.join("cvc").join(format!("{}.png", s.name));
+        signs.push(Sign { name: s.name.to_string(), shape: logogram_shape(&path) });
+    }
+    for n in 0..=19 {
         signs.push(Sign { name: core::numeral_name(n), shape: numerals::shape(n, half) });
     }
 
@@ -113,7 +118,7 @@ fn main() {
     }
 
     preview::compare(&compare, &["ki"], &out_prev.join("zoom.png"));
-    preview::compare(&compare, &["pi", "ki", "sa", "ja", "ne", "wo", "sky", "turtle", "num13"], &out_prev.join("compare.png"));
+    preview::compare(&compare, &["pi", "ki", "sa", "ja", "kak", "pvk", "sky", "num0", "num13"], &out_prev.join("compare.png"));
 
     let meta = serde_json::json!({
         "version": VERSION,
@@ -128,6 +133,10 @@ fn main() {
         "logograms": core::LOGOGRAMS.iter().enumerate().map(|(i, l)| serde_json::json!({
             "name": l.name, "es": l.es, "en": l.en, "reading": l.reading,
             "cp": format!("{:04X}", core::logogram_codepoint(i) as u32),
+        })).collect::<Vec<_>>(),
+        "cvc": core::CVC.iter().enumerate().map(|(i, s)| serde_json::json!({
+            "name": s.name, "label": s.label,
+            "cp": format!("{:04X}", core::cvc_codepoint(i) as u32),
         })).collect::<Vec<_>>(),
     });
     fs::write(out_data.join("glyphs.json"), serde_json::to_string(&meta).unwrap()).unwrap();
@@ -344,7 +353,15 @@ fn font_spec<'a>(st: Style, drawn: &[(String, Vec<Contour>)], placeholder: &[Con
             ligatures.push((seq(&format!("[{key}]")), gl));
         }
     }
-    for n in 1..=19u32 {
+    for (i, s) in core::CVC.iter().enumerate() {
+        let gl = g(s.name);
+        cmap.push((core::cvc_codepoint(i), gl));
+        // [kak]; pük also as [pvk].
+        for key in [s.label, s.name] {
+            ligatures.push((seq(&format!("[{key}]")), gl));
+        }
+    }
+    for n in 0..=19u32 {
         let gl = g(&core::numeral_name(n));
         cmap.push((core::numeral_codepoint(n), gl));
         ligatures.push((seq(&format!("#{n}")), gl));

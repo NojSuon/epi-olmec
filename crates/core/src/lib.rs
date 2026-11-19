@@ -103,9 +103,35 @@ pub fn syllables() -> Vec<(usize, usize, bool)> {
     out
 }
 
+/// Signs for whole closed syllables (consonant–vowel–consonant). Kaufman &
+/// Justeson (2001, §1.2) recognize these four: kak, pak, pük and yaj.
+pub struct Cvc {
+    pub name: &'static str,
+    pub label: &'static str,
+    pub c1: usize,
+    pub v: usize,
+    pub c2: usize,
+}
+
+pub const CVC: [Cvc; 4] = [
+    Cvc { name: "kak", label: "kak", c1: 3, v: 3, c2: 3 },
+    Cvc { name: "pak", label: "pak", c1: 0, v: 3, c2: 3 },
+    Cvc { name: "pvk", label: "pük", c1: 0, v: 2, c2: 3 },
+    Cvc { name: "yaj", label: "yaj", c1: 10, v: 3, c2: 6 },
+];
+
+pub fn cvc_index(c1: usize, v: usize, c2: usize) -> Option<usize> {
+    CVC.iter().position(|s| s.c1 == c1 && s.v == v && s.c2 == c2)
+}
+
+pub fn cvc_codepoint(index: usize) -> char {
+    char::from_u32(0xE100 + index as u32).unwrap()
+}
+
 /// Private Use Area code point of each glyph, stable across versions so text
 /// copied as code points keeps working: syllables from U+E000 (row × 16 +
-/// vowel × 2 + alternate), logograms from U+E200, numerals 1–19 from U+E300.
+/// vowel × 2 + alternate), closed syllables from U+E100, logograms from
+/// U+E200, numerals 0–19 from U+E300.
 pub fn syllable_codepoint(c: usize, v: usize, alt: bool) -> char {
     char::from_u32(0xE000 + (c as u32) * 16 + (v as u32) * 2 + alt as u32).unwrap()
 }

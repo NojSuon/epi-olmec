@@ -16,14 +16,14 @@ const I18N = {
     kbTitle: "Teclado",
     kbLead: "Cada consonante con su vocal es un signo: pa, tsi, kü. Una línea nueva empieza otra columna.",
     textLabel: "Tu texto en letras latinas",
-    textHelp: "La <b>h</b> es el saltillo (ʔ) y <b>ts</b> una sola consonante; la <b>ü</b> también se escribe <b>v</b>. <b>[cielo]</b> pone un logograma, un número del 1 al 19 es un numeral de barras y puntos, y <b>~</b> después de una sílaba elige su forma alterna (<b>ja~</b>).",
+    textHelp: "La <b>h</b> es el saltillo (ʔ) y <b>ts</b> una sola consonante; la <b>ü</b> también se escribe <b>v</b>. <b>[cielo]</b> pone un logograma, un número del 0 al 19 es un numeral de barras y puntos, y <b>~</b> después de una sílaba elige su forma alterna (<b>ja~</b>).",
     modeLabel: "Ortografía",
     modeAuto: "Reglas epi-olmecas",
     modeLiteral: "Letra por letra",
     modeHelpAuto: "Como en las inscripciones: una consonante sin vocal repite la vocal anterior (<b>tsap</b> → tsa·pa) y <b>h j w y</b> sin vocal no se escriben.",
     modeHelpLiteral: "Cada sílaba tal como la escribes; una consonante sola aparece como ◌ con su letra.",
-    styleSans: "Pal", styleSansSub: "sans",
-    styleJuego: "Juego", styleJuegoSub: "redonda",
+    styleSans: "Pal", styleSansSub: "lineal",
+    styleJuego: "Juego", styleJuegoSub: "pincel",
     styleEstela: "Estela", styleEstelaSub: "formal",
     colorLabel: "Color de los signos",
     bgLabel: "Fondo",
@@ -40,7 +40,7 @@ const I18N = {
     downloadSvg: "Descargar SVG",
     copyText: "Copiar texto (fuente)",
     fontsTitle: "Tres tipografías",
-    fontsLead: "Los 59 signos silábicos, 12 logogramas y los numerales del 1 al 19, vectorizados a partir de los dibujos originales y redibujados con una misma pluma para que todos compartan estilo.",
+    fontsLead: "Los 59 signos silábicos, 4 signos de sílaba cerrada, 12 logogramas y los numerales del 0 al 19, vectorizados a partir de los dibujos originales y redibujados con una misma pluma para que todos compartan estilo.",
     howtoTitle: "Cómo escribir con la fuente en otros programas",
     howto1: "Instala el archivo <b>.ttf</b>. Las ligaduras convierten lo que tecleas: <b>pa</b>, <b>tsa</b>, <b>hu</b>, <b>kv</b> o <b>kü</b>.",
     howto2: "Logogramas entre corchetes: <b>[sky]</b> o <b>[cielo]</b>. Numerales con almohadilla: <b>#13</b>.",
@@ -78,8 +78,8 @@ const I18N = {
     copyFail: "Tu navegador no deja copiar imágenes; usa Descargar PNG.",
     download: "Descargar",
     glyphs: "glifos",
-    sansDesc: "Trazo parejo y esquinas rectas, como una sans serif (黑体).",
-    juegoDesc: "Trazo grueso y redondo, puntas suaves: amable como Fredoka.",
+    sansDesc: "Lineal y geométrica: solo trazos rectos y a 45°, esquinas achaflanadas y puntos cuadrados.",
+    juegoDesc: "Hecha a pincel: trazo grueso que se hincha y se afina, con el pulso de la mano.",
     estelaDesc: "Verticales gruesas y horizontales finas con remate, como una Song (宋体).",
     home: "Inicio",
     keyboard: "Teclado",
@@ -90,6 +90,20 @@ const I18N = {
     follow: "Síguenos en",
     darkMode: "Modo oscuro",
     sample: "tsap\ntuki",
+    helpTitle: "Cómo teclear",
+    corpusTitle: "Corpus de palabras",
+    corpusLead: "Palabras leídas por Kaufman y Justeson en las inscripciones, con su deletreo en signos. Toca «Escribir» para llevarlas al teclado.",
+    corpusSearch: "Buscar (palabra, significado o deletreo)",
+    corpusSource: "<strong>Fuente.</strong> Kaufman y Justeson (2001), “Lexical items”, pp. 2.91–2.97, y ejemplos de §1–2. Las palabras van con <b>h</b>, <b>ts</b> y <b>ü</b>; entre ⟨ ⟩ se deja su deletreo original (7 = ʔ, tz = ts, ʉ = ü). Solo se incluyen palabras que se pueden escribir con los signos de estas fuentes.",
+    padCvc: "Sílabas cerradas (CVC)",
+    cvcHelp: "Kaufman y Justeson reconocen cuatro signos de sílaba cerrada. Con las reglas activas se usan solos: <b>kak</b>, <b>pük</b>.",
+    missingSyllables: "Sin signo conocido (◌): tso, ka, he, se, so, jü, mu, mo, no, wu, yi, yu, yo. Ninguna fuente que consultamos propone un signo para ellas.",
+    reading: "lectura",
+    shell: "concha",
+    zeroNote: "El cero (concha) sigue la convención mesoamericana; no aparece en los textos epi-olmecas que se conservan.",
+    useWord: "Escribir",
+    noWords: "Ninguna palabra coincide.",
+    corpusCount: (n, t) => (n === t ? `${t} palabras` : `${n} de ${t} palabras`),
   },
   en: {
     skip: "Skip to the keyboard",
@@ -101,14 +115,14 @@ const I18N = {
     kbTitle: "Keyboard",
     kbLead: "Each consonant with its vowel is one sign: pa, tsi, kü. A new line starts a new column.",
     textLabel: "Your text in Latin letters",
-    textHelp: "<b>h</b> is the glottal stop (ʔ) and <b>ts</b> is one consonant; <b>ü</b> can also be typed <b>v</b>. <b>[sky]</b> adds a logogram, a number from 1 to 19 is a bar-and-dot numeral, and <b>~</b> after a syllable picks its alternate form (<b>ja~</b>).",
+    textHelp: "<b>h</b> is the glottal stop (ʔ) and <b>ts</b> is one consonant; <b>ü</b> can also be typed <b>v</b>. <b>[sky]</b> adds a logogram, a number from 0 to 19 is a bar-and-dot numeral, and <b>~</b> after a syllable picks its alternate form (<b>ja~</b>).",
     modeLabel: "Spelling",
     modeAuto: "Epi-Olmec rules",
     modeLiteral: "Letter by letter",
     modeHelpAuto: "As in the inscriptions: a consonant with no vowel repeats the previous vowel (<b>tsap</b> → tsa·pa), and <b>h j w y</b> with no vowel are not written.",
     modeHelpLiteral: "Every syllable just as you type it; a lone consonant shows as ◌ with its letter.",
     styleSans: "Pal", styleSansSub: "sans",
-    styleJuego: "Juego", styleJuegoSub: "rounded",
+    styleJuego: "Juego", styleJuegoSub: "brush",
     styleEstela: "Estela", styleEstelaSub: "formal",
     colorLabel: "Sign colour",
     bgLabel: "Background",
@@ -125,7 +139,7 @@ const I18N = {
     downloadSvg: "Download SVG",
     copyText: "Copy text (font)",
     fontsTitle: "Three fonts",
-    fontsLead: "All 59 syllabic signs, 12 logograms and the numerals 1 to 19, vectorized from the original drawings and redrawn with one pen so they all share a style.",
+    fontsLead: "All 59 syllabic signs, 4 closed-syllable signs, 12 logograms and the numerals 0 to 19, vectorized from the original drawings and redrawn with one pen so they all share a style.",
     howtoTitle: "Writing with the font in other apps",
     howto1: "Install the <b>.ttf</b> file. Ligatures turn what you type into signs: <b>pa</b>, <b>tsa</b>, <b>hu</b>, <b>kv</b> or <b>kü</b>.",
     howto2: "Logograms in brackets: <b>[sky]</b> or <b>[cielo]</b>. Numerals with a hash: <b>#13</b>.",
@@ -162,8 +176,8 @@ const I18N = {
     copyFail: "Your browser can't copy images; use Download PNG.",
     download: "Download",
     glyphs: "glyphs",
-    sansDesc: "Even line and square corners, like a sans serif (黑体).",
-    juegoDesc: "Heavy, round line with soft ends: friendly like Fredoka.",
+    sansDesc: "Linear and geometric: only straight and 45° strokes, chamfered corners and square dots.",
+    juegoDesc: "Brushed by hand: a heavy stroke that swells and tapers, with a hand's wobble.",
     estelaDesc: "Thick verticals, thin horizontals and small serifs, like a Song face (宋体).",
     home: "Home",
     keyboard: "Keyboard",
@@ -174,6 +188,20 @@ const I18N = {
     follow: "Follow us at",
     darkMode: "Dark mode",
     sample: "tsap\ntuki",
+    helpTitle: "How to type",
+    corpusTitle: "Word corpus",
+    corpusLead: "Words read by Kaufman and Justeson in the inscriptions, with their spelling in signs. Press “Write” to send one to the keyboard.",
+    corpusSearch: "Search (word, meaning or spelling)",
+    corpusSource: "<strong>Source.</strong> Kaufman and Justeson (2001), “Lexical items”, pp. 2.91–2.97, and examples from §1–2. Words are written with <b>h</b>, <b>ts</b> and <b>ü</b>; ⟨ ⟩ keeps their original spelling (7 = ʔ, tz = ts, ʉ = ü). Only words that can be written with the signs in these fonts are included.",
+    padCvc: "Closed syllables (CVC)",
+    cvcHelp: "Kaufman and Justeson recognize four closed-syllable signs. With the rules on they are used automatically: <b>kak</b>, <b>pük</b>.",
+    missingSyllables: "No known sign (◌): tso, ka, he, se, so, jü, mu, mo, no, wu, yi, yu, yo. None of the sources we checked proposes a sign for them.",
+    reading: "reading",
+    shell: "shell",
+    zeroNote: "Zero (shell) follows the Mesoamerican convention; it does not appear in the surviving Epi-Olmec texts.",
+    useWord: "Write",
+    noWords: "No word matches.",
+    corpusCount: (n, t) => (n === t ? `${t} words` : `${n} of ${t} words`),
   },
 };
 let LANG = document.documentElement.lang === "en" ? "en" : "es";
@@ -242,6 +270,7 @@ document.addEventListener("click", (ev) => {
     buildSwatches();
     buildFonts();
     renderAll();
+    buildCorpus();
   }
 });
 
@@ -281,6 +310,8 @@ function readingOf(t) {
   if (t.k === "missing") return t.l;
   const syl = DATA.syllables.find((s) => s.name === t.g);
   if (syl) return syl.label;
+  const cvc = DATA.cvc.find((c) => c.name === t.g);
+  if (cvc) return cvc.label;
   const logo = DATA.logograms.find((l) => l.name === t.g);
   if (logo) return (LANG === "en" ? logo.en : logo.es).toUpperCase();
   if (t.g.startsWith("num")) return t.g.slice(3);
@@ -470,11 +501,32 @@ function keySvg(name) {
   return g ? `<svg viewBox="0 0 1000 1000" aria-hidden="true"><path d="${g.d}"/></svg>` : "";
 }
 
+// ---------- Folding sections ----------
+// Every <details data-fold="id"> remembers whether it was open or closed.
+function loadFolds() {
+  try { return JSON.parse(localStorage.getItem("epi-olmec-folds") || "{}"); } catch { return {}; }
+}
+function applyFolds(root = document) {
+  const folds = loadFolds();
+  root.querySelectorAll("details[data-fold]").forEach((d) => {
+    if (d.dataset.fold in folds) d.open = folds[d.dataset.fold];
+  });
+}
+document.addEventListener("toggle", (ev) => {
+  const d = ev.target;
+  if (!(d instanceof HTMLDetailsElement) || !d.dataset.fold) return;
+  const folds = loadFolds();
+  folds[d.dataset.fold] = d.open;
+  try { localStorage.setItem("epi-olmec-folds", JSON.stringify(folds)); } catch {}
+}, true);
+const fold = (id, title, body, open = true, cls = "") =>
+  `<details class="fold ${cls}" data-fold="${id}"${open ? " open" : ""}><summary><span>${title}</span></summary>${body}</details>`;
+
 function buildPad() {
   if (!DATA) return;
   const pad = $("#pad");
   const syl = new Map(DATA.syllables.map((s) => [s.name, s]));
-  let html = `<h3>${T("padSyllables")}</h3><div class="pad-table"><span></span>`;
+  let html = `<div class="pad-table"><span></span>`;
   html += V_LABELS.map((v) => `<span class="pad-head">${v}</span>`).join("");
   C_LABELS.forEach((c, ci) => {
     html += `<span class="pad-head">${c}</span>`;
@@ -488,28 +540,86 @@ function buildPad() {
       html += `<button type="button" class="pad-key" data-insert="${s.label}" title="${s.label}" aria-label="${s.label}">${keySvg(s.name)}<span class="k">${s.label}</span>${hasAlt ? '<span class="alt-dot" aria-hidden="true"></span>' : ""}</button>`;
     });
   });
-  html += `</div>`;
-  html += `<h3>${T("padAlternates")}</h3><div class="pad-row">`;
-  for (const s of DATA.syllables.filter((x) => x.alt)) {
-    html += `<button type="button" class="pad-key" data-insert="${s.label}~" title="${s.label}~">${keySvg(s.name)}<span class="k">${s.label}~</span></button>`;
+  html += `</div><p class="caption pad-missing">${T("missingSyllables")}</p>`;
+  let out = fold("pad-syllables", T("padSyllables"), html);
+
+  let cvc = `<p class="caption">${T("cvcHelp")}</p><div class="pad-row">`;
+  for (const s of DATA.cvc) {
+    cvc += `<button type="button" class="pad-key" data-insert="[${s.label}]" title="${s.label}">${keySvg(s.name)}<span class="k">${s.label}</span></button>`;
   }
-  html += `</div><h3>${T("padLogograms")}</h3><div class="pad-row">`;
+  out += fold("pad-cvc", T("padCvc"), cvc + `</div>`);
+
+  let alts = `<div class="pad-row">`;
+  for (const s of DATA.syllables.filter((x) => x.alt)) {
+    alts += `<button type="button" class="pad-key" data-insert="${s.label}~" title="${s.label}~">${keySvg(s.name)}<span class="k">${s.label}~</span></button>`;
+  }
+  out += fold("pad-alternates", T("padAlternates"), alts + `</div>`, false);
+
+  // Logograms with their proposed reading under the name.
+  let logos = `<div class="pad-row pad-row--logos">`;
   for (const l of DATA.logograms) {
     const key = LANG === "en" ? l.name : l.es;
-    html += `<button type="button" class="pad-key" data-insert="[${key}]" title="${l.en} · ${l.reading}">${keySvg(l.name)}<span class="k">${key}</span></button>`;
+    logos += `<button type="button" class="pad-key pad-key--logo" data-insert="[${key}]" title="${l.en} · ${T("reading")}: ${l.reading}">${keySvg(l.name)}<span class="k">${key}<span class="r">${l.reading}</span></span></button>`;
   }
-  html += `</div><h3>${T("padNumerals")}</h3><div class="pad-row">`;
-  for (let n = 1; n <= 19; n++) {
-    html += `<button type="button" class="pad-key" data-insert="${n} " title="${n}">${keySvg("num" + n)}<span class="k">${n}</span></button>`;
+  out += fold("pad-logograms", T("padLogograms"), logos + `</div>`);
+
+  // Numerals 0–19 in a 5 × 4 grid: each row adds a bar.
+  let nums = `<div class="pad-grid5">`;
+  for (let n = 0; n <= 19; n++) {
+    const label = n === 0 ? `0 <small>${T("shell")}</small>` : n;
+    nums += `<button type="button" class="pad-key" data-insert="${n} " title="${n}">${keySvg("num" + n)}<span class="k">${label}</span></button>`;
   }
-  html += `</div><div class="pad-tools">
+  nums += `</div><p class="caption">${T("zeroNote")}</p>`;
+  out += fold("pad-numerals", T("padNumerals"), nums);
+
+  out += `<div class="pad-tools">
     <button type="button" data-insert=" ">${T("space")}</button>
     <button type="button" data-insert="\n">${T("newColumn")}</button>
     <button type="button" data-erase>${T("erase")}</button>
     <button type="button" data-clear>${T("clear")}</button>
   </div>`;
-  pad.innerHTML = html;
+  pad.innerHTML = out;
+  applyFolds(pad);
 }
+
+// ---------- Corpus ----------
+let CORPUS = null;
+function buildCorpus() {
+  const box = $("#corpus-list");
+  if (!box || !CORPUS || !DATA) return;
+  const q = ($("#corpus-search")?.value || "").trim().toLowerCase();
+  const words = CORPUS.words.filter((w) => !q || [w.w, w.es, w.en, w.kj].some((s) => s.toLowerCase().includes(q)));
+  box.innerHTML = words.map((w, i) => `
+    <li class="word">
+      <canvas class="word-signs" data-i="${CORPUS.words.indexOf(w)}" aria-hidden="true"></canvas>
+      <div class="word-text">
+        <span class="word-form">${w.w}</span>
+        <span class="word-gloss">${LANG === "en" ? w.en : w.es}</span>
+        <span class="word-kj" title="Kaufman & Justeson">${w.kj.replace(/</g, "⟨").replace(/>/g, "⟩")} · p. ${w.p}</span>
+      </div>
+      <button type="button" class="word-use" data-word="${CORPUS.words.indexOf(w)}">${T("useWord")}</button>
+    </li>`).join("") || `<li class="caption">${T("noWords")}</li>`;
+  $("#corpus-count").textContent = T("corpusCount", words.length, CORPUS.words.length);
+  box.querySelectorAll("canvas.word-signs").forEach((c) => {
+    const w = CORPUS.words[Number(c.dataset.i)];
+    const toks = JSON.parse(spell(w.in, true));
+    const opt = { ...DEFAULTS, style: state.style, size: 46, color: getComputedStyle(document.body).getPropertyValue("--mati-tinta").trim() || "#2B1D1A", colgap: 6 };
+    const lay = layout(toks, opt);
+    c.width = lay.width * 2;
+    c.height = lay.height * 2;
+    c.style.width = lay.width + "px";
+    draw(c.getContext("2d"), lay, opt, 2);
+  });
+}
+document.addEventListener("click", (ev) => {
+  const b = ev.target.closest("[data-word]");
+  if (!b) return;
+  const w = CORPUS.words[Number(b.dataset.word)];
+  const ta = $("#text");
+  ta.value = ta.value.trim() ? ta.value.replace(/\s+$/, "") + "\n" + w.in : w.in;
+  update();
+  $("#teclado").scrollIntoView({ behavior: "smooth" });
+});
 
 $("#pad").addEventListener("click", (ev) => {
   const b = ev.target.closest("button");
@@ -570,6 +680,7 @@ document.addEventListener("click", (ev) => {
     syncControls();
     buildPad();
     update();
+    buildCorpus();
   }
   const sw = ev.target.closest("[data-color]");
   if (sw) {
@@ -636,7 +747,7 @@ $("#download-svg").addEventListener("click", () => {
   status(T("downloaded"));
 });
 $("#copy-text").addEventListener("click", async () => {
-  const cp = new Map([...DATA.syllables.map((s) => [s.name, s.cp]), ...DATA.logograms.map((l) => [l.name, l.cp])]);
+  const cp = new Map([...DATA.syllables.map((s) => [s.name, s.cp]), ...DATA.logograms.map((l) => [l.name, l.cp]), ...DATA.cvc.map((c) => [c.name, c.cp])]);
   const out = tokens.map((t) => {
     if (t.k === "sign") {
       if (t.g.startsWith("num")) return String.fromCodePoint(0xe300 + Number(t.g.slice(3)));
@@ -682,8 +793,12 @@ applyI18n();
 renderChrome();
 await init();
 DATA = await (await fetch("data/glyphs.json?v={{v}}")).json();
+try { CORPUS = await (await fetch("data/corpus.json?v={{v}}")).json(); } catch (e) { console.warn("corpus", e); }
 buildPad();
 buildSwatches();
 buildFonts();
 update();
+buildCorpus();
+applyFolds();
 loadFonts();
+document.addEventListener("input", (ev) => { if (ev.target.id === "corpus-search") buildCorpus(); });

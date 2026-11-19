@@ -23,9 +23,9 @@ pub const LOGOGRAMS: [Logogram; 12] = [
     Logogram { name: "longlip", es: "labio", en: "LONGLIP", reading: "jihts" },
     Logogram { name: "middle", es: "medio", en: "MIDDLE", reading: "kuk" },
     Logogram { name: "loincloth", es: "taparrabo", en: "LOINCLOTH?", reading: "jup" },
-    Logogram { name: "plant", es: "sembrar", en: "PLANT", reading: "nip" },
+    Logogram { name: "plant", es: "sembrar", en: "PLANT", reading: "nihp" },
     Logogram { name: "dealwith", es: "tratar", en: "DEAL.WITH", reading: "tüp" },
-    Logogram { name: "blood", es: "sangre", en: "BLOOD", reading: "nuhpin" },
+    Logogram { name: "blood", es: "sangre", en: "BLOOD", reading: "nühpin" },
 ];
 
 /// Finds a logogram by its English or Spanish key, ignoring case.

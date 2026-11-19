@@ -20,7 +20,7 @@
 //! bar-and-dot numerals, `~` after a syllable for its alternate form, a new
 //! line for a new column.
 
-use crate::{has_alternate, known, logograms, syllable_label, CONSONANTS, VOWELS};
+use crate::{cvc_index, has_alternate, known, logograms, syllable_label, CONSONANTS, CVC, VOWELS};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Mode {
@@ -35,6 +35,8 @@ pub enum Token {
     Syllable { c: usize, v: usize, alt: bool, text: String, echo: bool },
     /// A syllable whose sign is not known yet; shown as a placeholder.
     Missing { label: String, text: String },
+    /// A closed-syllable sign (index into `CVC`).
+    Cvc { index: usize, text: String },
     /// Typed but not written, by the spelling rules (weak consonants…).
     Silent { text: String },
     Logogram { index: usize, text: String },
@@ -130,6 +132,17 @@ fn spell_word(word: &[char], mode: Mode, out: &mut Vec<Token>) {
                 i += 1;
             }
             Unit::C(c) => {
+                // A closed syllable with its own sign (kak, pak, pük, yaj):
+                // consonant + vowel + consonant not followed by a vowel.
+                if let (Some((Unit::V(v), vt)), Some((Unit::C(c2), ct))) = (us.get(i + 1), us.get(i + 2)) {
+                    let closed = !matches!(us.get(i + 3), Some((Unit::V(_), _)));
+                    if let (true, Some(index)) = (closed, cvc_index(c, *v, *c2)) {
+                        out.push(Token::Cvc { index, text: format!("{text}{vt}{ct}") });
+                        last_vowel = Some(*v);
+                        i += 3;
+                        continue;
+                    }
+                }
                 if let Some((Unit::V(v), vt)) = us.get(i + 1) {
                     out.push(syllable(c, *v, format!("{text}{vt}"), false));
                     last_vowel = Some(*v);
@@ -196,9 +209,14 @@ pub fn spell(input: &str, mode: Mode) -> Vec<Token> {
                 Some(end) => {
                     let key: String = chars[i + 1..end].iter().collect();
                     let text: String = chars[i..=end].iter().collect();
-                    match logograms::find(&key) {
-                        Some(index) => out.push(Token::Logogram { index, text }),
-                        None => out.push(Token::Other { text }),
+                    // [sky] / [cielo] for a logogram, [kak] for a closed-syllable sign.
+                    let k = key.trim().replace('v', "ü");
+                    if let Some(index) = logograms::find(&key) {
+                        out.push(Token::Logogram { index, text });
+                    } else if let Some(index) = CVC.iter().position(|s| s.label == k) {
+                        out.push(Token::Cvc { index, text });
+                    } else {
+                        out.push(Token::Other { text });
                     }
                     i = end + 1;
                 }
@@ -214,7 +232,7 @@ pub fn spell(input: &str, mode: Mode) -> Vec<Token> {
             }
             let text: String = chars[start..i].iter().collect();
             match text.parse::<u32>() {
-                Ok(n) if (1..=19).contains(&n) => out.push(Token::Numeral { n, text }),
+                Ok(n) if (0..=19).contains(&n) => out.push(Token::Numeral { n, text }),
                 _ => out.push(Token::Other { text }),
             }
         } else if is_word_char(ch) {
@@ -274,5 +292,63 @@ mod tests {
         assert_eq!(names("[sky] [Cielo]", Mode::Auto), ["sky", "_", "sky"]);
         assert_eq!(names("13 pa\nmi", Mode::Auto), ["num13", "_", "pa", "|", "mi"]);
         assert_eq!(names("ka", Mode::Auto), ["?ka"]);
+    }
+}
+
+#[cfg(test)]
+mod more_tests {
+    use super::*;
+
+    fn kinds(input: &str) -> Vec<String> {
+        spell(input, Mode::Auto)
+            .into_iter()
+            .filter_map(|t| match t {
+                Token::Syllable { c, v, alt, .. } => Some(crate::syllable_name(c, v, alt)),
+                Token::Cvc { index, .. } => Some(format!("={}", CVC[index].name)),
+                Token::Numeral { n, .. } => Some(format!("num{n}")),
+                Token::Missing { label, .. } => Some(format!("?{label}")),
+                _ => None,
+            })
+            .collect()
+    }
+
+    #[test]
+    fn closed_syllables() {
+        // kak 'to replace' is one sign; kakpeh 'scorpion' starts with it.
+        assert_eq!(kinds("kak"), ["=kak"]);
+        assert_eq!(kinds("kakpeh"), ["=kak", "pe"]);
+        // pakih 'hard' is pa-ki, not pak + i.
+        assert_eq!(kinds("pakih"), ["pa", "ki"]);
+        assert_eq!(kinds("pük yaj [pak]"), ["=pvk", "=yaj", "=pak"]);
+    }
+
+    #[test]
+    fn zero() {
+        assert_eq!(kinds("0 19"), ["num0", "num19"]);
+    }
+}
+
+#[cfg(test)]
+mod corpus_tests {
+    use super::*;
+
+    /// Every word in the site's corpus must spell with known signs only.
+    #[test]
+    fn corpus_spells_cleanly() {
+        let json = include_str!("../../../site/data/corpus.json");
+        let mut n = 0;
+        for line in json.lines() {
+            let Some(start) = line.find("\"in\": \"") else { continue };
+            let rest = &line[start + 7..];
+            let input = &rest[..rest.find('"').unwrap()];
+            for t in spell(input, Mode::Auto) {
+                assert!(
+                    !matches!(t, Token::Missing { .. } | Token::Other { .. }),
+                    "corpus entry {input:?} gives {t:?}"
+                );
+            }
+            n += 1;
+        }
+        assert!(n > 60);
     }
 }

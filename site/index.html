@@ -53,7 +53,10 @@
             <textarea id="text" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off">tsap
 tuki 13
 [cielo] mak</textarea>
-            <p class="caption" data-i18n-html="textHelp">La <b>h</b> es el saltillo (ʔ) y <b>ts</b> una sola consonante; la <b>ü</b> también se escribe <b>v</b>. <b>[cielo]</b> pone un logograma, un número del 1 al 19 es un numeral de barras y puntos, y <b>~</b> después de una sílaba elige su forma alterna (<b>ja~</b>).</p>
+            <details class="fold fold--small" data-fold="help" open>
+              <summary><span data-i18n="helpTitle">Cómo teclear</span></summary>
+              <p class="caption" data-i18n-html="textHelp">La <b>h</b> es el saltillo (ʔ) y <b>ts</b> una sola consonante; la <b>ü</b> también se escribe <b>v</b>. <b>[cielo]</b> pone un logograma, un número del 0 al 19 es un numeral de barras y puntos, y <b>~</b> después de una sílaba elige su forma alterna (<b>ja~</b>).</p>
+            </details>
 
             <div class="mode-switch" role="radiogroup" aria-labelledby="mode-label">
               <span id="mode-label" class="field-label" data-i18n="modeLabel">Ortografía</span>
@@ -68,8 +71,8 @@ tuki 13
           <div class="studio-output">
             <div class="toolbar" role="group" aria-label="Estilo">
               <div class="seg" id="style-seg">
-                <button type="button" data-style="sans" aria-pressed="true"><span data-i18n="styleSans">Pal</span><small data-i18n="styleSansSub">sans</small></button>
-                <button type="button" data-style="juego" aria-pressed="false"><span data-i18n="styleJuego">Juego</span><small data-i18n="styleJuegoSub">redonda</small></button>
+                <button type="button" data-style="sans" aria-pressed="true"><span data-i18n="styleSans">Pal</span><small data-i18n="styleSansSub">lineal</small></button>
+                <button type="button" data-style="juego" aria-pressed="false"><span data-i18n="styleJuego">Juego</span><small data-i18n="styleJuegoSub">pincel</small></button>
                 <button type="button" data-style="estela" aria-pressed="false"><span data-i18n="styleEstela">Estela</span><small data-i18n="styleEstelaSub">formal</small></button>
               </div>
             </div>
@@ -134,8 +137,9 @@ tuki 13
     <!-- Fonts -->
     <section class="section" id="tipografias" aria-labelledby="fonts-title">
       <div class="wrap">
-        <h2 id="fonts-title" data-i18n="fontsTitle">Tres tipografías</h2>
-        <p class="lead" data-i18n="fontsLead">Los 59 signos silábicos, 12 logogramas y los numerales del 1 al 19, vectorizados a partir de los dibujos originales y redibujados con una misma pluma para que todos compartan estilo.</p>
+        <details class="fold fold--section" data-fold="fonts" open>
+        <summary><h2 id="fonts-title" data-i18n="fontsTitle">Tres tipografías</h2></summary>
+        <p class="lead" data-i18n="fontsLead">Los 59 signos silábicos, 4 signos de sílaba cerrada, 12 logogramas y los numerales del 0 al 19, vectorizados a partir de los dibujos originales y redibujados con una misma pluma para que todos compartan estilo.</p>
         <div class="font-grid" id="font-grid"></div>
         <div class="card card--blanca font-howto">
           <h3 data-i18n="howtoTitle">Cómo escribir con la fuente en otros programas</h3>
@@ -146,13 +150,32 @@ tuki 13
             <li data-i18n-html="howto4">El botón <b>Copiar texto (fuente)</b> copia los signos como caracteres de uso privado (U+E000…), que se ven bien con cualquiera de las tres fuentes aunque las ligaduras estén apagadas.</li>
           </ul>
         </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- Corpus -->
+    <section class="section" id="corpus" aria-labelledby="corpus-title">
+      <div class="wrap">
+        <details class="fold fold--section" data-fold="corpus" open>
+        <summary><h2 id="corpus-title" data-i18n="corpusTitle">Corpus de palabras</h2></summary>
+        <p class="lead" data-i18n="corpusLead">Palabras leídas por Kaufman y Justeson en las inscripciones, con su deletreo en signos. Toca «Escribir» para llevarlas al teclado.</p>
+        <div class="corpus-tools">
+          <label class="field-label" for="corpus-search" data-i18n="corpusSearch">Buscar (palabra, significado o deletreo)</label>
+          <input type="search" id="corpus-search" autocomplete="off" spellcheck="false">
+          <p class="caption" id="corpus-count"></p>
+        </div>
+        <ul class="corpus-list" id="corpus-list"></ul>
+        <p class="source" data-i18n-html="corpusSource"><strong>Fuente.</strong> Kaufman y Justeson (2001), “Lexical items”, pp. 2.91–2.97, y ejemplos de §1–2. Las palabras van con <b>h</b>, <b>ts</b> y <b>ü</b>; entre ⟨ ⟩ se deja su deletreo original (7 = ʔ, tz = ts, ʉ = ü). Solo se incluyen palabras que se pueden escribir con los signos de estas fuentes.</p>
+        </details>
       </div>
     </section>
 
     <!-- About the script -->
     <section class="section" id="escritura" aria-labelledby="about-title">
       <div class="wrap">
-        <h2 id="about-title" data-i18n="aboutTitle">Sobre la escritura</h2>
+        <details class="fold fold--section" data-fold="about" open>
+        <summary><h2 id="about-title" data-i18n="aboutTitle">Sobre la escritura</h2></summary>
         <div class="grid-2 about">
           <div class="card">
             <h3 data-i18n="about1Title">Una escritura mixe-zoque</h3>
@@ -172,6 +195,7 @@ tuki 13
           </div>
         </div>
         <p class="source" data-i18n-html="sources"><strong>Fuentes.</strong> Terrence Kaufman y John Justeson, <i>Epi-Olmec Hieroglyphic Writing and Texts</i> (2001), figura 4 y §1–2. Tabla del silabario redibujada a partir de esa figura. Aquí se escribe <b>h</b> por su <b>7</b> (ʔ) y <b>ts</b> por su <b>tz</b>. Las lecturas son las de los autores y algunas son tentativas.</p>
+        </details>
       </div>
     </section>
 

@@ -1,7 +1,7 @@
 //! WebAssembly bindings: the browser keyboard calls `spell` on every
 //! keystroke and draws the signs it returns.
 
-use epi_olmec_core::{spell as spell_text, syllable_name, Mode, Token, LOGOGRAMS};
+use epi_olmec_core::{spell as spell_text, syllable_name, Mode, Token, CVC, LOGOGRAMS};
 use wasm_bindgen::prelude::*;
 
 fn esc(s: &str) -> String {
@@ -39,6 +39,7 @@ pub fn spell(input: &str, auto: bool) -> String {
             Token::Logogram { index, text } => {
                 format!(r#"{{"k":"sign","g":{},"t":{},"logo":true}}"#, esc(LOGOGRAMS[index].name), esc(&text))
             }
+            Token::Cvc { index, text } => format!(r#"{{"k":"sign","g":{},"t":{},"cvc":true}}"#, esc(CVC[index].name), esc(&text)),
             Token::Numeral { n, text } => format!(r#"{{"k":"sign","g":"num{n}","t":{}}}"#, esc(&text)),
             Token::Missing { label, text } => format!(r#"{{"k":"missing","l":{},"t":{}}}"#, esc(&label), esc(&text)),
             Token::Silent { text } => format!(r#"{{"k":"silent","t":{}}}"#, esc(&text)),

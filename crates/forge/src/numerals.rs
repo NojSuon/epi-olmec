@@ -14,6 +14,9 @@ const DOT_R: f32 = 44.0;
 const DOT_STEP: f32 = 150.0;
 
 pub fn shape(n: u32, half: f32) -> Shape {
+    if n == 0 {
+        return shell(half);
+    }
     let (bars, dots) = (n / 5, n % 5);
     let mut s = Shape { half, ..Default::default() };
     let mut y = 0.0;
@@ -31,6 +34,39 @@ pub fn shape(n: u32, half: f32) -> Shape {
             s.dots.push(((x0 + i as f32 * DOT_STEP, top), DOT_R));
         }
     }
+    s
+}
+
+/// Zero as a shell, the Mesoamerican sign for completion. No zero is
+/// attested in the surviving Epi-Olmec texts, so this follows the general
+/// Mesoamerican convention: a shell seen from the side, with its lip and ribs.
+fn shell(half: f32) -> Shape {
+    let mut s = Shape { half, ..Default::default() };
+    // Body: a wide oval, slightly flattened on top.
+    let body: Vec<(f32, f32)> = (0..36)
+        .map(|i| {
+            let a = i as f32 * std::f32::consts::TAU / 36.0;
+            let y = if a.sin() > 0.0 { 150.0 * a.sin() } else { 190.0 * a.sin() };
+            (310.0 * a.cos(), y)
+        })
+        .collect();
+    s.strokes.push(Line { pts: body, closed: true });
+    // Lip: an arc across the top third.
+    let lip: Vec<(f32, f32)> = (0..=12)
+        .map(|i| {
+            let t = i as f32 / 12.0;
+            let x = -255.0 + 510.0 * t;
+            (x, 40.0 + 60.0 * (1.0 - (2.0 * t - 1.0).powi(2)))
+        })
+        .collect();
+    s.strokes.push(Line { pts: lip, closed: false });
+    // Ribs fanning down from the lip.
+    for (x0, x1) in [(-130.0, -170.0), (0.0, 0.0), (130.0, 170.0)] {
+        s.strokes.push(Line { pts: vec![(x0, 40.0), (x1, -120.0)], closed: false });
+    }
+    // Two dots above the lip.
+    s.dots.push(((-80.0, 105.0), DOT_R * 0.55));
+    s.dots.push(((80.0, 105.0), DOT_R * 0.55));
     s
 }
 
