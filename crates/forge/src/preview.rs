@@ -94,3 +94,29 @@ pub fn compare(styles: &[Vec<(String, Vec<Contour>)>], names: &[&str], path: &Pa
     }
     pm.save_png(path).unwrap();
 }
+
+/// The neographies laid out like the chart (rows p…y, l, r), in every style.
+pub fn neo(styles: &[Vec<(String, Vec<Contour>)>], path: &Path) {
+    use epi_olmec_core::neography;
+    let rows: Vec<usize> = (0..13).filter(|&c| (0..6).any(|v| neography::exists(c, v))).collect();
+    let cell = 110.0;
+    let (cols, h) = (6 * styles.len() + styles.len() - 1, rows.len());
+    let mut pm = Pixmap::new((cols as f32 * cell) as u32, (h as f32 * cell) as u32).unwrap();
+    pm.fill(tiny_skia::Color::from_rgba8(255, 249, 245, 255));
+    let scale = (cell - 14.0) / 1000.0;
+    for (si, drawn) in styles.iter().enumerate() {
+        for (ri, &c) in rows.iter().enumerate() {
+            for v in 0..6 {
+                if !neography::exists(c, v) {
+                    continue;
+                }
+                let name = neography::name(c, v);
+                if let Some(d) = drawn.iter().find(|d| d.0 == name) {
+                    let x = (si * 7 + v) as f32 * cell + 7.0;
+                    fill(&mut pm, &d.1, x, ri as f32 * cell + 7.0, scale);
+                }
+            }
+        }
+    }
+    pm.save_png(path).unwrap();
+}

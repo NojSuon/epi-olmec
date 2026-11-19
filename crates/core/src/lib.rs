@@ -6,10 +6,11 @@
 //! 53 syllables are known.
 
 pub mod logograms;
+pub mod neography;
 pub mod spell;
 
 pub use logograms::{Logogram, LOGOGRAMS};
-pub use spell::{spell, Mode, Token};
+pub use spell::{spell, spell_with, Mode, Token};
 
 /// Consonants in chart order. `name` is ASCII and used in glyph names,
 /// `label` is how the consonant is written in the practical orthography.
@@ -20,7 +21,10 @@ pub struct Consonant {
     pub weak: bool,
 }
 
-pub const CONSONANTS: [Consonant; 11] = [
+/// The first 11 are the consonants of the language and of the chart. The
+/// last two, l and r, did not exist in Epi-Olmec; they are only written with
+/// neographies (see `neography`).
+pub const CONSONANTS: [Consonant; 13] = [
     Consonant { name: "p", label: "p", weak: false },
     Consonant { name: "t", label: "t", weak: false },
     Consonant { name: "ts", label: "ts", weak: false },
@@ -34,7 +38,12 @@ pub const CONSONANTS: [Consonant; 11] = [
     Consonant { name: "n", label: "n", weak: false },
     Consonant { name: "w", label: "w", weak: true },
     Consonant { name: "y", label: "y", weak: true },
+    Consonant { name: "l", label: "l", weak: false },
+    Consonant { name: "r", label: "r", weak: false },
 ];
+
+/// Number of consonants the script actually had.
+pub const NATIVE_CONSONANTS: usize = 11;
 
 /// Vowels in chart order. `ü` is the high central vowel /ɨ/.
 pub struct Vowel {
@@ -52,7 +61,7 @@ pub const VOWELS: [Vowel; 6] = [
 ];
 
 /// Which syllables have a known sign, row by row (i e ü a u o).
-const KNOWN: [[bool; 6]; 11] = [
+const KNOWN: [[bool; 6]; 13] = [
     [true, true, true, true, true, true],     // p
     [true, true, true, true, true, true],     // t
     [true, true, true, true, true, false],    // ts
@@ -64,6 +73,8 @@ const KNOWN: [[bool; 6]; 11] = [
     [true, true, true, true, true, false],    // n
     [true, true, true, true, false, true],    // w
     [false, true, true, true, false, false],  // y
+    [false; 6],                               // l (not in the language)
+    [false; 6],                               // r (not in the language)
 ];
 
 /// Syllables drawn with two forms in the chart; the second is the alternate

@@ -95,6 +95,14 @@ const I18N = {
     corpusLead: "Palabras leídas por Kaufman y Justeson en las inscripciones, con su deletreo en signos. Toca «Escribir» para llevarlas al teclado.",
     corpusSearch: "Buscar (palabra, significado o deletreo)",
     corpusSource: "<strong>Fuente.</strong> Kaufman y Justeson (2001), “Lexical items”, pp. 2.91–2.97, y ejemplos de §1–2. Las palabras van con <b>ts</b> y <b>ü</b>, y el saltillo como vocal sola al inicio o <b>'</b> dentro; entre ⟨ ⟩ se deja su deletreo original (7 = ʔ, tz = ts, ʉ = ü). Solo se incluyen palabras que se pueden escribir con los signos de estas fuentes.",
+    padNeo: "Propuestas · neografías",
+    neoBadge: "Neografías:",
+    neoHelp: "signos modernos propuestos aquí, <b>no atestiguados</b> en ninguna inscripción. Llenan las sílabas sin signo conocido y añaden <b>l</b> y <b>r</b>, que el epi-olmeca no tenía, para escribir nombres y préstamos.",
+    neoRules: "Cómo se forman: arriba, un signo real de la misma consonante, reducido; abajo, una marca de vocal (i <b>|</b>, e <b>||</b>, ü <b>○</b>, a <b>—</b>, u <b>∪</b>, o <b>◇</b>). La <b>l</b> parte de un signo de <b>y</b> (en mixe-zoque la l antigua se volvió y) con un trazo recto a la izquierda; la <b>r</b> parte de un signo de <b>t</b> con un trazo en zigzag.",
+    neoTitle: "neografía (propuesta moderna)",
+    attested: "Tiene signo atestiguado: está en la tabla de sílabas",
+    neoLabel: "Usar neografías (propuestas modernas) para sílabas sin signo, l y r",
+    neoNote: (l) => `Neografías (propuestas modernas, no atestiguadas): ${l}. Con la lectura activada se marcan con *.`,
     padCvc: "Sílabas cerradas (CVC)",
     cvcHelp: "Kaufman y Justeson reconocen cuatro signos de sílaba cerrada. Con las reglas activas se usan solos: <b>kak</b>, <b>pük</b>.",
     missingSyllables: "Sin signo conocido (◌): tso, ka, e, se, so, jü, mu, mo, no, wu, yi, yu, yo. Ninguna fuente que consultamos propone un signo para ellas.",
@@ -193,6 +201,14 @@ const I18N = {
     corpusLead: "Words read by Kaufman and Justeson in the inscriptions, with their spelling in signs. Press “Write” to send one to the keyboard.",
     corpusSearch: "Search (word, meaning or spelling)",
     corpusSource: "<strong>Source.</strong> Kaufman and Justeson (2001), “Lexical items”, pp. 2.91–2.97, and examples from §1–2. Words are written with <b>ts</b> and <b>ü</b>, and the glottal stop as a bare vowel at the start or <b>'</b> inside; ⟨ ⟩ keeps their original spelling (7 = ʔ, tz = ts, ʉ = ü). Only words that can be written with the signs in these fonts are included.",
+    padNeo: "Proposals · neographies",
+    neoBadge: "Neographies:",
+    neoHelp: "modern signs proposed here, <b>not attested</b> in any inscription. They fill the syllables with no known sign and add <b>l</b> and <b>r</b>, which Epi-Olmec did not have, for names and loanwords.",
+    neoRules: "How they are built: on top, a real sign of the same consonant, shrunk; below, a vowel mark (i <b>|</b>, e <b>||</b>, ü <b>○</b>, a <b>—</b>, u <b>∪</b>, o <b>◇</b>). <b>l</b> starts from a <b>y</b> sign (in Mixe-Zoquean an older l became y) with a straight stroke on the left; <b>r</b> starts from a <b>t</b> sign with a zigzag stroke.",
+    neoTitle: "neography (modern proposal)",
+    attested: "Has an attested sign: see the syllable table",
+    neoLabel: "Use neographies (modern proposals) for syllables with no sign, l and r",
+    neoNote: (l) => `Neographies (modern proposals, not attested): ${l}. With readings on they are marked *.`,
     padCvc: "Closed syllables (CVC)",
     cvcHelp: "Kaufman and Justeson recognize four closed-syllable signs. With the rules on they are used automatically: <b>kak</b>, <b>pük</b>.",
     missingSyllables: "No known sign (◌): tso, ka, e, se, so, jü, mu, mo, no, wu, yi, yu, yo. None of the sources we checked proposes a sign for them.",
@@ -285,7 +301,7 @@ const BACKGROUNDS = [
   [null, "none"], ["#FFF9F5", "Papel"], ["#E8E4F1", "Lila Suave"], ["#FFE7E0", "Rosa Crema"], ["#E4CCB3", "Arena Dorada"],
   ["#CDDFDD", "Espuma"], ["#4A2F5B", "Berenjena"], ["#2B1D1A", "Tinta"],
 ];
-const DEFAULTS = { style: "sans", color: "#2B1D1A", bg: null, size: 120, spacing: 0, colgap: 40, outline: 0, rtl: false, labels: false, guides: false, mode: "auto", scale: "2" };
+const DEFAULTS = { style: "sans", color: "#2B1D1A", bg: null, size: 120, spacing: 0, colgap: 40, outline: 0, rtl: false, labels: false, guides: false, mode: "auto", neo: true, scale: "2" };
 let state = { ...DEFAULTS };
 try { Object.assign(state, JSON.parse(localStorage.getItem("epi-olmec") || "{}")); } catch {}
 const save = () => { try { localStorage.setItem("epi-olmec", JSON.stringify({ ...state, text: $("#text").value })); } catch {} };
@@ -310,6 +326,8 @@ function readingOf(t) {
   if (t.k === "missing") return t.l;
   const syl = DATA.syllables.find((s) => s.name === t.g);
   if (syl) return syl.label;
+  const neo = DATA.neo.find((n) => n.name === t.g);
+  if (neo) return neo.label + "*";
   const cvc = DATA.cvc.find((c) => c.name === t.g);
   if (cvc) return cvc.label;
   const logo = DATA.logograms.find((l) => l.name === t.g);
@@ -458,11 +476,13 @@ function toSvg(lay, opt) {
 // ---------- Rendering ----------
 let tokens = [];
 function update() {
-  tokens = JSON.parse(spell($("#text").value, state.mode === "auto"));
+  tokens = JSON.parse(spell($("#text").value, state.mode === "auto", state.neo));
   const missing = [...new Set(tokens.filter((t) => t.k === "missing").map((t) => t.l))];
   const other = [...new Set(tokens.filter((t) => t.k === "other").map((t) => t.t))];
   const notes = [];
   if (missing.length) notes.push(T("missingNote", missing.join(", ")));
+  const neos = [...new Set(tokens.filter((t) => t.neo).map((t) => DATA.neo.find((n) => n.name === t.g)?.label))];
+  if (neos.length) notes.push(T("neoNote", neos.join(", ")));
   if (other.length) notes.push(T("otherNote", other.join(" ")));
   $("#stage-note").textContent = notes.join(" ");
   renderAll();
@@ -484,7 +504,7 @@ function renderAll() {
 function heroSample() {
   const c = $("#hero-canvas");
   if (!c || !DATA) return;
-  const toks = JSON.parse(spell(T("sample"), true));
+  const toks = JSON.parse(spell(T("sample"), true, false));
   const opt = { ...DEFAULTS, style: "juego", size: 120, color: "#4A2F5B", colgap: 18 };
   const lay = layout(toks, opt);
   c.width = lay.width * 2;
@@ -542,6 +562,24 @@ function buildPad() {
   });
   html += `</div><p class="caption pad-missing">${T("missingSyllables")}</p>`;
   let out = fold("pad-syllables", T("padSyllables"), html);
+
+  // Proposals: neographies for syllables with no attested sign, and l / r.
+  const neoRows = [...new Set(DATA.neo.map((n) => n.c))];
+  let neo = `<p class="neo-warning"><strong>${T("neoBadge")}</strong> ${T("neoHelp")}</p><div class="pad-table pad-table--neo"><span></span>`;
+  neo += V_LABELS.map((v) => `<span class="pad-head">${v}</span>`).join("");
+  for (const ci of neoRows) {
+    neo += `<span class="pad-head">${[...C_LABELS, "l", "r"][ci]}</span>`;
+    V_LABELS.forEach((v, vi) => {
+      const n = DATA.neo.find((x) => x.c === ci && x.v === vi);
+      if (!n) {
+        neo += `<span class="pad-attested" title="${T("attested")}"></span>`;
+        return;
+      }
+      neo += `<button type="button" class="pad-key pad-key--neo" data-insert="${n.label}" title="${n.label} · ${T("neoTitle")}" aria-label="${n.label}, ${T("neoTitle")}">${keySvg(n.name)}<span class="k">${n.label}</span><span class="neo-badge" aria-hidden="true">N</span></button>`;
+    });
+  }
+  neo += `</div><p class="caption">${T("neoRules")}</p>`;
+  out += fold("pad-neo", T("padNeo"), neo, true, "fold--neo");
 
   let cvc = `<p class="caption">${T("cvcHelp")}</p><div class="pad-row">`;
   for (const s of DATA.cvc) {
@@ -602,7 +640,7 @@ function buildCorpus() {
   $("#corpus-count").textContent = T("corpusCount", words.length, CORPUS.words.length);
   box.querySelectorAll("canvas.word-signs").forEach((c) => {
     const w = CORPUS.words[Number(c.dataset.i)];
-    const toks = JSON.parse(spell(w.in, true));
+    const toks = JSON.parse(spell(w.in, true, false));
     const opt = { ...DEFAULTS, style: state.style, size: 46, color: getComputedStyle(document.body).getPropertyValue("--mati-tinta").trim() || "#2B1D1A", colgap: 6 };
     const lay = layout(toks, opt);
     c.width = lay.width * 2;
@@ -666,6 +704,7 @@ function syncControls() {
   $("#rtl").checked = state.rtl;
   $("#labels").checked = state.labels;
   $("#guides").checked = state.guides;
+  $("#neo").checked = state.neo;
   $("#scale").value = state.scale;
   document.querySelector(`input[name="mode"][value="${state.mode}"]`).checked = true;
   const help = $("#mode-help");
@@ -701,7 +740,7 @@ document.addEventListener("input", (ev) => {
   if (t.id === "color-custom") { state.color = t.value; syncControls(); return update(); }
   if (t.id === "bg-custom") { state.bg = t.value; syncControls(); return update(); }
   if (["size", "spacing", "colgap", "outline"].includes(t.id)) { state[t.id] = Number(t.value); return update(); }
-  if (["rtl", "labels", "guides"].includes(t.id)) { state[t.id] = t.checked; return update(); }
+  if (["rtl", "labels", "guides", "neo"].includes(t.id)) { state[t.id] = t.checked; return update(); }
   if (t.name === "mode") { state.mode = t.value; syncControls(); return update(); }
   if (t.id === "scale") { state.scale = t.value; save(); }
 });
@@ -747,7 +786,7 @@ $("#download-svg").addEventListener("click", () => {
   status(T("downloaded"));
 });
 $("#copy-text").addEventListener("click", async () => {
-  const cp = new Map([...DATA.syllables.map((s) => [s.name, s.cp]), ...DATA.logograms.map((l) => [l.name, l.cp]), ...DATA.cvc.map((c) => [c.name, c.cp])]);
+  const cp = new Map([...DATA.syllables.map((s) => [s.name, s.cp]), ...DATA.logograms.map((l) => [l.name, l.cp]), ...DATA.cvc.map((c) => [c.name, c.cp]), ...DATA.neo.map((n) => [n.name, n.cp])]);
   const out = tokens.map((t) => {
     if (t.k === "sign") {
       if (t.g.startsWith("num")) return String.fromCodePoint(0xe300 + Number(t.g.slice(3)));
