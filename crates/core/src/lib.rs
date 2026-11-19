@@ -25,7 +25,9 @@ pub const CONSONANTS: [Consonant; 11] = [
     Consonant { name: "t", label: "t", weak: false },
     Consonant { name: "ts", label: "ts", weak: false },
     Consonant { name: "k", label: "k", weak: false },
-    Consonant { name: "h", label: "h", weak: true },
+    // The glottal stop row: written as the bare vowel (a, e, i…). h, 7, ' and ʔ
+    // are accepted as silent spellings of it, like the Spanish h.
+    Consonant { name: "", label: "", weak: true },
     Consonant { name: "s", label: "s", weak: false },
     Consonant { name: "j", label: "j", weak: true },
     Consonant { name: "m", label: "m", weak: false },
@@ -55,7 +57,7 @@ const KNOWN: [[bool; 6]; 11] = [
     [true, true, true, true, true, true],     // t
     [true, true, true, true, true, false],    // ts
     [true, true, true, false, true, true],    // k
-    [true, false, true, true, true, true],    // h (glottal stop)
+    [true, false, true, true, true, true],    // bare vowels (glottal stop)
     [true, false, true, true, true, false],   // s
     [true, true, false, true, true, true],    // j
     [true, true, true, true, false, false],   // m
@@ -82,7 +84,7 @@ pub fn syllable_name(c: usize, v: usize, alt: bool) -> String {
     format!("{}{}{}", CONSONANTS[c].name, VOWELS[v].name, if alt { ".alt" } else { "" })
 }
 
-/// Syllable as written in the practical orthography: `pa`, `hü`.
+/// Syllable as written in the practical orthography: `pa`, `ü` (glottal row).
 pub fn syllable_label(c: usize, v: usize) -> String {
     format!("{}{}", CONSONANTS[c].label, VOWELS[v].label)
 }
@@ -165,6 +167,6 @@ mod tests {
     #[test]
     fn names() {
         assert_eq!(syllable_name(2, 3, true), "tsa.alt");
-        assert_eq!(syllable_label(4, 2), "hü");
+        assert_eq!(syllable_label(4, 2), "ü");
     }
 }

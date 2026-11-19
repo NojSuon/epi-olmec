@@ -16,11 +16,11 @@ const I18N = {
     kbTitle: "Teclado",
     kbLead: "Cada consonante con su vocal es un signo: pa, tsi, kü. Una línea nueva empieza otra columna.",
     textLabel: "Tu texto en letras latinas",
-    textHelp: "La <b>h</b> es el saltillo (ʔ) y <b>ts</b> una sola consonante; la <b>ü</b> también se escribe <b>v</b>. <b>[cielo]</b> pone un logograma, un número del 0 al 19 es un numeral de barras y puntos, y <b>~</b> después de una sílaba elige su forma alterna (<b>ja~</b>).",
+    textHelp: "Una vocal sola (<b>a</b>, <b>e</b>, <b>i</b>…) es su propio signo, el del saltillo (ʔ); dentro de una palabra escríbelo con <b>'</b> (<b>poy'a</b>). <b>ts</b> es una sola consonante y la <b>ü</b> también se escribe <b>v</b>. <b>[cielo]</b> pone un logograma, un número del 0 al 19 es un numeral de barras y puntos, y <b>~</b> después de una sílaba elige su forma alterna (<b>ja~</b>).",
     modeLabel: "Ortografía",
     modeAuto: "Reglas epi-olmecas",
     modeLiteral: "Letra por letra",
-    modeHelpAuto: "Como en las inscripciones: una consonante sin vocal repite la vocal anterior (<b>tsap</b> → tsa·pa) y <b>h j w y</b> sin vocal no se escriben.",
+    modeHelpAuto: "Como en las inscripciones: una consonante sin vocal repite la vocal anterior (<b>tsap</b> → tsa·pa) y el saltillo (<b>'</b>), <b>j</b>, <b>w</b> y <b>y</b> sin vocal no se escriben.",
     modeHelpLiteral: "Cada sílaba tal como la escribes; una consonante sola aparece como ◌ con su letra.",
     styleSans: "Pal", styleSansSub: "lineal",
     styleJuego: "Juego", styleJuegoSub: "pincel",
@@ -42,7 +42,7 @@ const I18N = {
     fontsTitle: "Tres tipografías",
     fontsLead: "Los 59 signos silábicos, 4 signos de sílaba cerrada, 12 logogramas y los numerales del 0 al 19, vectorizados a partir de los dibujos originales y redibujados con una misma pluma para que todos compartan estilo.",
     howtoTitle: "Cómo escribir con la fuente en otros programas",
-    howto1: "Instala el archivo <b>.ttf</b>. Las ligaduras convierten lo que tecleas: <b>pa</b>, <b>tsa</b>, <b>hu</b>, <b>kv</b> o <b>kü</b>.",
+    howto1: "Instala el archivo <b>.ttf</b>. Las ligaduras convierten lo que tecleas: <b>pa</b>, <b>tsa</b>, <b>u</b>, <b>kv</b> o <b>kü</b>.",
     howto2: "Logogramas entre corchetes: <b>[sky]</b> o <b>[cielo]</b>. Numerales con almohadilla: <b>#13</b>.",
     howto3: "Para escribir en columnas usa texto vertical (en CSS: <code>writing-mode: vertical-lr; text-orientation: upright</code>). Cada signo ocupa su propia altura.",
     howto4: "El botón <b>Copiar texto (fuente)</b> copia los signos como caracteres de uso privado (U+E000…), que se ven bien con cualquiera de las tres fuentes aunque las ligaduras estén apagadas.",
@@ -52,10 +52,10 @@ const I18N = {
     about2Title: "Columnas de arriba abajo",
     about2: "Los signos se escriben en columnas que se leen de arriba abajo y de izquierda a derecha. Mezcla logogramas (palabras) con signos silábicos de consonante y vocal.",
     about3Title: "11 consonantes, 6 vocales",
-    about3: "Consonantes <b>p t ts k h s j m n w y</b> (la <b>h</b> es el saltillo, /ʔ/) y vocales <b>i e ü a u o</b> (<b>ü</b> es una vocal central, /ɨ/). Hoy se conocen los signos de 53 de las 66 sílabas posibles; las que faltan se muestran como ◌.",
+    about3: "Consonantes <b>p t ts k s j m n w y</b> más el saltillo /ʔ/, cuya fila se escribe con la vocal sola, y vocales <b>i e ü a u o</b> (<b>ü</b> es una vocal central, /ɨ/). Hoy se conocen los signos de 53 de las 66 sílabas posibles; las que faltan se muestran como ◌.",
     about4Title: "Cómo se deletrea",
-    about4: "Una consonante final se escribe con la sílaba que repite la vocal anterior (<b>tsap</b> “cielo” → tsa·pa). <b>h j w y</b> no se escriben antes de otra consonante, y <b>k</b> no se escribe antes de <b>s</b>.",
-    sources: "<strong>Fuentes.</strong> Terrence Kaufman y John Justeson, <i>Epi-Olmec Hieroglyphic Writing and Texts</i> (2001), figura 4 y §1–2. Tabla del silabario redibujada a partir de esa figura. Aquí se escribe <b>h</b> por su <b>7</b> (ʔ) y <b>ts</b> por su <b>tz</b>. Las lecturas son las de los autores y algunas son tentativas.",
+    about4: "Una consonante final se escribe con la sílaba que repite la vocal anterior (<b>tsap</b> “cielo” → tsa·pa). El saltillo, <b>j</b>, <b>w</b> y <b>y</b> no se escriben antes de otra consonante, y <b>k</b> no se escribe antes de <b>s</b>.",
+    sources: "<strong>Fuentes.</strong> Terrence Kaufman y John Justeson, <i>Epi-Olmec Hieroglyphic Writing and Texts</i> (2001), figura 4 y §1–2. Tabla del silabario redibujada a partir de esa figura. Aquí su <b>7</b> (ʔ) se escribe con la vocal sola al inicio y con <b>'</b> dentro de la palabra, y su <b>tz</b> como <b>ts</b>. Las lecturas son las de los autores y algunas son tentativas.",
     ctaTitle: "¡Cuéntanos!",
     ctaText: "¿Qué escribiste en epi-olmeca? Compártelo y etiquétanos.",
     ctaButton: "Escríbenos en Instagram",
@@ -94,10 +94,10 @@ const I18N = {
     corpusTitle: "Corpus de palabras",
     corpusLead: "Palabras leídas por Kaufman y Justeson en las inscripciones, con su deletreo en signos. Toca «Escribir» para llevarlas al teclado.",
     corpusSearch: "Buscar (palabra, significado o deletreo)",
-    corpusSource: "<strong>Fuente.</strong> Kaufman y Justeson (2001), “Lexical items”, pp. 2.91–2.97, y ejemplos de §1–2. Las palabras van con <b>h</b>, <b>ts</b> y <b>ü</b>; entre ⟨ ⟩ se deja su deletreo original (7 = ʔ, tz = ts, ʉ = ü). Solo se incluyen palabras que se pueden escribir con los signos de estas fuentes.",
+    corpusSource: "<strong>Fuente.</strong> Kaufman y Justeson (2001), “Lexical items”, pp. 2.91–2.97, y ejemplos de §1–2. Las palabras van con <b>ts</b> y <b>ü</b>, y el saltillo como vocal sola al inicio o <b>'</b> dentro; entre ⟨ ⟩ se deja su deletreo original (7 = ʔ, tz = ts, ʉ = ü). Solo se incluyen palabras que se pueden escribir con los signos de estas fuentes.",
     padCvc: "Sílabas cerradas (CVC)",
     cvcHelp: "Kaufman y Justeson reconocen cuatro signos de sílaba cerrada. Con las reglas activas se usan solos: <b>kak</b>, <b>pük</b>.",
-    missingSyllables: "Sin signo conocido (◌): tso, ka, he, se, so, jü, mu, mo, no, wu, yi, yu, yo. Ninguna fuente que consultamos propone un signo para ellas.",
+    missingSyllables: "Sin signo conocido (◌): tso, ka, e, se, so, jü, mu, mo, no, wu, yi, yu, yo. Ninguna fuente que consultamos propone un signo para ellas.",
     reading: "lectura",
     shell: "concha",
     zeroNote: "El cero (concha) sigue la convención mesoamericana; no aparece en los textos epi-olmecas que se conservan.",
@@ -115,11 +115,11 @@ const I18N = {
     kbTitle: "Keyboard",
     kbLead: "Each consonant with its vowel is one sign: pa, tsi, kü. A new line starts a new column.",
     textLabel: "Your text in Latin letters",
-    textHelp: "<b>h</b> is the glottal stop (ʔ) and <b>ts</b> is one consonant; <b>ü</b> can also be typed <b>v</b>. <b>[sky]</b> adds a logogram, a number from 0 to 19 is a bar-and-dot numeral, and <b>~</b> after a syllable picks its alternate form (<b>ja~</b>).",
+    textHelp: "A vowel on its own (<b>a</b>, <b>e</b>, <b>i</b>…) is its own sign, the glottal-stop one (ʔ); inside a word type it as <b>'</b> (<b>poy'a</b>). <b>ts</b> is one consonant and <b>ü</b> can also be typed <b>v</b>. <b>[sky]</b> adds a logogram, a number from 0 to 19 is a bar-and-dot numeral, and <b>~</b> after a syllable picks its alternate form (<b>ja~</b>).",
     modeLabel: "Spelling",
     modeAuto: "Epi-Olmec rules",
     modeLiteral: "Letter by letter",
-    modeHelpAuto: "As in the inscriptions: a consonant with no vowel repeats the previous vowel (<b>tsap</b> → tsa·pa), and <b>h j w y</b> with no vowel are not written.",
+    modeHelpAuto: "As in the inscriptions: a consonant with no vowel repeats the previous vowel (<b>tsap</b> → tsa·pa), and the glottal stop (<b>'</b>), <b>j</b>, <b>w</b> and <b>y</b> with no vowel are not written.",
     modeHelpLiteral: "Every syllable just as you type it; a lone consonant shows as ◌ with its letter.",
     styleSans: "Pal", styleSansSub: "sans",
     styleJuego: "Juego", styleJuegoSub: "brush",
@@ -141,7 +141,7 @@ const I18N = {
     fontsTitle: "Three fonts",
     fontsLead: "All 59 syllabic signs, 4 closed-syllable signs, 12 logograms and the numerals 0 to 19, vectorized from the original drawings and redrawn with one pen so they all share a style.",
     howtoTitle: "Writing with the font in other apps",
-    howto1: "Install the <b>.ttf</b> file. Ligatures turn what you type into signs: <b>pa</b>, <b>tsa</b>, <b>hu</b>, <b>kv</b> or <b>kü</b>.",
+    howto1: "Install the <b>.ttf</b> file. Ligatures turn what you type into signs: <b>pa</b>, <b>tsa</b>, <b>u</b>, <b>kv</b> or <b>kü</b>.",
     howto2: "Logograms in brackets: <b>[sky]</b> or <b>[cielo]</b>. Numerals with a hash: <b>#13</b>.",
     howto3: "To write in columns use vertical text (in CSS: <code>writing-mode: vertical-lr; text-orientation: upright</code>). Each sign takes its own height.",
     howto4: "<b>Copy text (font)</b> copies the signs as Private Use characters (U+E000…), which show correctly in any of the three fonts even with ligatures off.",
@@ -151,10 +151,10 @@ const I18N = {
     about2Title: "Columns, top to bottom",
     about2: "Signs are written in columns read top to bottom and left to right. It mixes logograms (word signs) with consonant–vowel syllable signs.",
     about3Title: "11 consonants, 6 vowels",
-    about3: "Consonants <b>p t ts k h s j m n w y</b> (<b>h</b> is the glottal stop, /ʔ/) and vowels <b>i e ü a u o</b> (<b>ü</b> is a central vowel, /ɨ/). Signs are known for 53 of the 66 possible syllables; missing ones show as ◌.",
+    about3: "Consonants <b>p t ts k s j m n w y</b> plus the glottal stop /ʔ/, whose row is written with the bare vowel, and vowels <b>i e ü a u o</b> (<b>ü</b> is a central vowel, /ɨ/). Signs are known for 53 of the 66 possible syllables; missing ones show as ◌.",
     about4Title: "How words are spelled",
-    about4: "A final consonant is written with the syllable that repeats the previous vowel (<b>tsap</b> ‘sky’ → tsa·pa). <b>h j w y</b> are not written before another consonant, and <b>k</b> is not written before <b>s</b>.",
-    sources: "<strong>Sources.</strong> Terrence Kaufman and John Justeson, <i>Epi-Olmec Hieroglyphic Writing and Texts</i> (2001), figure 4 and §1–2. Syllabary chart redrawn from that figure. Here <b>h</b> stands for their <b>7</b> (ʔ) and <b>ts</b> for their <b>tz</b>. Readings are the authors'; some are tentative.",
+    about4: "A final consonant is written with the syllable that repeats the previous vowel (<b>tsap</b> ‘sky’ → tsa·pa). The glottal stop, <b>j</b>, <b>w</b> and <b>y</b> are not written before another consonant, and <b>k</b> is not written before <b>s</b>.",
+    sources: "<strong>Sources.</strong> Terrence Kaufman and John Justeson, <i>Epi-Olmec Hieroglyphic Writing and Texts</i> (2001), figure 4 and §1–2. Syllabary chart redrawn from that figure. Here their <b>7</b> (ʔ) is the bare vowel at the start of a word and <b>'</b> inside it, and their <b>tz</b> is <b>ts</b>. Readings are the authors'; some are tentative.",
     ctaTitle: "Tell us!",
     ctaText: "What did you write in Epi-Olmec? Share it and tag us.",
     ctaButton: "Message us on Instagram",
@@ -192,10 +192,10 @@ const I18N = {
     corpusTitle: "Word corpus",
     corpusLead: "Words read by Kaufman and Justeson in the inscriptions, with their spelling in signs. Press “Write” to send one to the keyboard.",
     corpusSearch: "Search (word, meaning or spelling)",
-    corpusSource: "<strong>Source.</strong> Kaufman and Justeson (2001), “Lexical items”, pp. 2.91–2.97, and examples from §1–2. Words are written with <b>h</b>, <b>ts</b> and <b>ü</b>; ⟨ ⟩ keeps their original spelling (7 = ʔ, tz = ts, ʉ = ü). Only words that can be written with the signs in these fonts are included.",
+    corpusSource: "<strong>Source.</strong> Kaufman and Justeson (2001), “Lexical items”, pp. 2.91–2.97, and examples from §1–2. Words are written with <b>ts</b> and <b>ü</b>, and the glottal stop as a bare vowel at the start or <b>'</b> inside; ⟨ ⟩ keeps their original spelling (7 = ʔ, tz = ts, ʉ = ü). Only words that can be written with the signs in these fonts are included.",
     padCvc: "Closed syllables (CVC)",
     cvcHelp: "Kaufman and Justeson recognize four closed-syllable signs. With the rules on they are used automatically: <b>kak</b>, <b>pük</b>.",
-    missingSyllables: "No known sign (◌): tso, ka, he, se, so, jü, mu, mo, no, wu, yi, yu, yo. None of the sources we checked proposes a sign for them.",
+    missingSyllables: "No known sign (◌): tso, ka, e, se, so, jü, mu, mo, no, wu, yi, yu, yo. None of the sources we checked proposes a sign for them.",
     reading: "reading",
     shell: "shell",
     zeroNote: "Zero (shell) follows the Mesoamerican convention; it does not appear in the surviving Epi-Olmec texts.",
@@ -304,7 +304,7 @@ function glyphPath(style, name) {
 }
 const glyph = (style, name) => DATA.styles[style].glyphs[name];
 
-// What a sign reads as: the syllable (hi, si), the logogram's gloss in
+// What a sign reads as: the syllable (i, si), the logogram's gloss in
 // capitals (as Kaufman & Justeson write them) or the number.
 function readingOf(t) {
   if (t.k === "missing") return t.l;
@@ -493,7 +493,7 @@ function heroSample() {
 }
 
 // ---------- Pad ----------
-const C_LABELS = ["p", "t", "ts", "k", "h", "s", "j", "m", "n", "w", "y"];
+const C_LABELS = ["p", "t", "ts", "k", "–", "s", "j", "m", "n", "w", "y"];
 const V_LABELS = ["i", "e", "ü", "a", "u", "o"];
 
 function keySvg(name) {

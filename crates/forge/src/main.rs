@@ -323,8 +323,8 @@ fn font_spec<'a>(st: Style, drawn: &[(String, Vec<Contour>)], placeholder: &[Con
     let mut ligatures: Vec<(Vec<usize>, usize)> = Vec::new();
     let mut ss01 = Vec::new();
     let consonant_spellings: [&[&str]; 11] = [
-        // h is the glottal stop and ts its affricate; 7 ' ʔ and tz are older spellings.
-        &["p"], &["t"], &["ts", "tz"], &["k"], &["h", "7", "'", "’", "ʼ", "ʔ"], &["s"], &["j"], &["m"], &["n"], &["w"], &["y"],
+        // The glottal-stop row is the bare vowel; h 7 ' ʔ before it are silent spellings. tz = ts.
+        &["p"], &["t"], &["ts", "tz"], &["k"], &["", "h", "7", "'", "’", "ʼ", "ʔ"], &["s"], &["j"], &["m"], &["n"], &["w"], &["y"],
     ];
     let vowel_spellings: [&[&str]; 6] = [&["i"], &["e"], &["ü", "v", "ʉ", "ɨ"], &["a"], &["u"], &["o"]];
     let seq = |s: &str| -> Vec<usize> { s.chars().map(gin).collect() };
@@ -336,10 +336,6 @@ fn font_spec<'a>(st: Style, drawn: &[(String, Vec<Contour>)], placeholder: &[Con
             for vs in vowel_spellings[v] {
                 let typed = format!("{cs}{vs}{}", if alt { "~" } else { "" });
                 ligatures.push((seq(&typed), gl));
-                // A vowel alone is read as h (glottal stop) + vowel.
-                if c == 4 && !alt && *cs == "h" {
-                    ligatures.push((seq(&format!("{vs}")), gl));
-                }
             }
         }
         if alt {

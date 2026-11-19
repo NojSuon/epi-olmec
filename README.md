@@ -38,10 +38,10 @@ Outputs: `fonts/*.ttf`, `site/data/glyphs.json` (the same outlines, for the keyb
 | You type | You get |
 | --- | --- |
 | `pa`, `tsi`, `ko` | one syllabic sign each |
-| `ha` | ha: **h** is the glottal stop /ʔ/ (`7a`, `'a`, `ʔa` also work) |
+| `a`, `e`, `i`… | the glottal-stop row: a vowel on its own is its sign. Inside a word, mark it with `'` (`poy'a`); `h`, `7` and `ʔ` also work |
 | `tsa` | tsa: **ts** is one consonant (`tza` also works) |
 | `kv`, `kü` | kü (ü is the central vowel /ɨ/) |
-| `ja~` | the alternate form of ja (pa, tsa, kü, hi, si and ja have one) |
+| `ja~` | the alternate form of ja (pa, tsa, kü, i, si and ja have one) |
 | `[sky]`, `[cielo]` | a logogram (English or Spanish name); the keyboard shows each one's proposed reading |
 | `kak`, `pük`, or `[kak]` | a closed-syllable sign (kak, pak, pük, yaj); the fonts use `[kak]` |
 | `0`–`19` on the site, `#0`–`#19` in the fonts | a bar-and-dot numeral (0 = shell) |
@@ -50,10 +50,10 @@ Outputs: `fonts/*.ttf`, `site/data/glyphs.json` (the same outlines, for the keyb
 With **Epi-Olmec rules** turned on (the default), the keyboard spells words the way the inscriptions do (Kaufman & Justeson §2):
 
 - a consonant with no vowel is written with the sign that repeats the previous vowel: `tsap` → tsa·pa;
-- h, j, w and y with no vowel are not written: `poyha` → po·ha;
+- the glottal stop, j, w and y with no vowel are not written: `poy'a` → po·a;
 - k (and probably p) are not written before s.
 
-Syllables with no known sign show as ◌: tso, ka, he, se, so, jü, mu, mo, no, wu, yi, yu, yo. Kaufman & Justeson (2001, p. 2.6) give no sign for them, and we found no other published proposal.
+Syllables with no known sign show as ◌: tso, ka, e, se, so, jü, mu, mo, no, wu, yi, yu, yo. Kaufman & Justeson (2001, p. 2.6) give no sign for them, and we found no other published proposal.
 
 ## Corpus
 
@@ -86,5 +86,5 @@ One-time setup: Settings → Pages → Source: "GitHub Actions".
 
 ## Sources
 
-- Terrence Kaufman and John Justeson, *Epi-Olmec Hieroglyphic Writing and Texts* (2001): the syllabary (figure 4), the spelling rules (§2) and the logograms (§1.3, §2.3). Readings are theirs and some are tentative. This project writes their 7 (ʔ) as **h** and their tz as **ts**.
+- Terrence Kaufman and John Justeson, *Epi-Olmec Hieroglyphic Writing and Texts* (2001): the syllabary (figure 4), the spelling rules (§2) and the logograms (§1.3, §2.3). Readings are theirs and some are tentative. This project writes their 7 (ʔ) as a bare vowel at the start of a word and `'` inside it, and their tz as **ts**.
 - `sources/syllabary-chart.png`: a redrawing of that syllabary chart.

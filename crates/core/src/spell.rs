@@ -1,26 +1,28 @@
 //! Turns Latin text into Epi-Olmec signs.
 //!
 //! Typing works like a Japanese kana keyboard: each consonant + vowel becomes
-//! one syllabic sign (`pa`, `tsi`, `hu`, `kü`/`kv`). The glottal stop /ʔ/ is
-//! written `h`, and Kaufman & Justeson's `tz` is written `ts`; their `7`, `'`,
-//! `ʔ` and `tz` are still accepted. On top of that the `Auto` mode applies the
+//! one syllabic sign (`pa`, `tsi`, `kü`/`kv`), and a vowel on its own is the
+//! sign of the glottal-stop row (`a`, `u`). Inside a word the glottal stop is
+//! marked `'` (`poy'a`); `h`, Kaufman & Justeson's `7` and `ʔ` work too, and
+//! their `tz` is written `ts`. On top of that the `Auto` mode applies the
 //! spelling rules they describe (2001, §2):
 //!
 //! * a strong consonant (p t ts k s m n) with no vowel after it is spelled
 //!   with the sign whose vowel repeats the previous vowel ("synharmony"):
 //!   `tsap` → tsa·pa;
-//! * a weak consonant (h j w y) with no vowel after it is not written:
-//!   `poyha` → po·ha;
+//! * a weak consonant (glottal stop, j, w, y) with no vowel after it is not
+//!   written: `poy'a` → po·a;
 //! * k, and probably p, are not written right before s: `nuks` → nu·si.
 //!
 //! `Literal` mode writes exactly what is typed and shows a lone consonant as
 //! a placeholder.
 //!
-//! Other input: `[sky]` or `[cielo]` for a logogram, numbers 1–19 as
+//! Other input: `[sky]` or `[cielo]` for a logogram, `[kak]` for a closed
+//! syllable, numbers 0–19 as
 //! bar-and-dot numerals, `~` after a syllable for its alternate form, a new
 //! line for a new column.
 
-use crate::{cvc_index, has_alternate, known, logograms, syllable_label, CONSONANTS, CVC, VOWELS};
+use crate::{cvc_index, has_alternate, known, logograms, syllable_label, CONSONANTS, CVC};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Mode {
@@ -170,13 +172,9 @@ fn spell_word(word: &[char], mode: Mode, out: &mut Vec<Token>) {
                 }
             }
             Unit::V(v) => {
-                // A vowel with no consonant before it: words never start with
-                // a vowel, so it is read as h (glottal stop) + vowel.
-                if mode == Mode::Auto {
-                    out.push(syllable(4, v, text, false));
-                } else {
-                    out.push(Token::Missing { label: VOWELS[v].label.into(), text });
-                }
+                // A vowel with no consonant before it is its own sign (the
+                // glottal-stop row of the chart: a, e, i…).
+                out.push(syllable(4, v, text, false));
                 last_vowel = Some(v);
                 i += 1;
             }
@@ -270,16 +268,17 @@ mod tests {
 
     #[test]
     fn open_syllables() {
-        assert_eq!(names("pa tsi kü hu 7u tzi", Mode::Auto), ["pa", "_", "tsi", "_", "kv", "_", "hu", "_", "hu", "_", "tsi"]);
-        assert_eq!(names("kvho", Mode::Auto), ["kv", "ho"]);
+        assert_eq!(names("pa tsi kü u hu 7u tzi", Mode::Auto), ["pa", "_", "tsi", "_", "kv", "_", "u", "_", "u", "_", "u", "_", "tsi"]);
+        assert_eq!(names("kvo", Mode::Auto), ["kv", "o"]);
     }
 
     #[test]
     fn spelling_rules() {
         // tsap 'sky' → tsa-pa
         assert_eq!(names("tsap", Mode::Auto), ["tsa", "pa"]);
-        // poyha 'moon' → po-ha (weak y is not written)
-        assert_eq!(names("poyha", Mode::Auto), ["po", "ha"]);
+        // poy'a 'moon' (K&J poy7a) → po-a (weak y is not written); h works too
+        assert_eq!(names("poyha", Mode::Auto), ["po", "a"]);
+        assert_eq!(names("poy'a", Mode::Auto), ["po", "a"]);
         // nuks → nu-si (k before s)
         assert_eq!(names("nuksi", Mode::Auto), ["nu", "si"]);
         // literal mode keeps the lone consonant as a placeholder

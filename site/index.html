@@ -55,7 +55,7 @@ tuki 13
 [cielo] mak</textarea>
             <details class="fold fold--small" data-fold="help" open>
               <summary><span data-i18n="helpTitle">Cómo teclear</span></summary>
-              <p class="caption" data-i18n-html="textHelp">La <b>h</b> es el saltillo (ʔ) y <b>ts</b> una sola consonante; la <b>ü</b> también se escribe <b>v</b>. <b>[cielo]</b> pone un logograma, un número del 0 al 19 es un numeral de barras y puntos, y <b>~</b> después de una sílaba elige su forma alterna (<b>ja~</b>).</p>
+              <p class="caption" data-i18n-html="textHelp">Una vocal sola (<b>a</b>, <b>e</b>, <b>i</b>…) es su propio signo, el del saltillo (ʔ); dentro de una palabra escríbelo con <b>'</b> (<b>poy'a</b>). <b>ts</b> es una sola consonante y la <b>ü</b> también se escribe <b>v</b>. <b>[cielo]</b> pone un logograma, un número del 0 al 19 es un numeral de barras y puntos, y <b>~</b> después de una sílaba elige su forma alterna (<b>ja~</b>).</p>
             </details>
 
             <div class="mode-switch" role="radiogroup" aria-labelledby="mode-label">
@@ -63,7 +63,7 @@ tuki 13
               <label class="chip"><input type="radio" name="mode" value="auto" checked><span data-i18n="modeAuto">Reglas epi-olmecas</span></label>
               <label class="chip"><input type="radio" name="mode" value="literal"><span data-i18n="modeLiteral">Letra por letra</span></label>
             </div>
-            <p class="caption" id="mode-help" data-i18n-html="modeHelpAuto">Como en las inscripciones: una consonante sin vocal repite la vocal anterior (<b>tsap</b> → tsa·pa) y <b>h j w y</b> sin vocal no se escriben.</p>
+            <p class="caption" id="mode-help" data-i18n-html="modeHelpAuto">Como en las inscripciones: una consonante sin vocal repite la vocal anterior (<b>tsap</b> → tsa·pa) y el saltillo (<b>'</b>), <b>j</b>, <b>w</b> y <b>y</b> sin vocal no se escriben.</p>
 
             <div class="pad" id="pad" aria-label="Teclado de signos"></div>
           </div>
@@ -144,7 +144,7 @@ tuki 13
         <div class="card card--blanca font-howto">
           <h3 data-i18n="howtoTitle">Cómo escribir con la fuente en otros programas</h3>
           <ul>
-            <li data-i18n-html="howto1">Instala el archivo <b>.ttf</b>. Las ligaduras convierten lo que tecleas: <b>pa</b>, <b>tsa</b>, <b>hu</b>, <b>kv</b> o <b>kü</b>.</li>
+            <li data-i18n-html="howto1">Instala el archivo <b>.ttf</b>. Las ligaduras convierten lo que tecleas: <b>pa</b>, <b>tsa</b>, <b>u</b>, <b>kv</b> o <b>kü</b>.</li>
             <li data-i18n-html="howto2">Logogramas entre corchetes: <b>[sky]</b> o <b>[cielo]</b>. Numerales con almohadilla: <b>#13</b>.</li>
             <li data-i18n-html="howto3">Para escribir en columnas usa texto vertical (en CSS: <code>writing-mode: vertical-lr; text-orientation: upright</code>). Cada signo ocupa su propia altura.</li>
             <li data-i18n-html="howto4">El botón <b>Copiar texto (fuente)</b> copia los signos como caracteres de uso privado (U+E000…), que se ven bien con cualquiera de las tres fuentes aunque las ligaduras estén apagadas.</li>
@@ -166,7 +166,7 @@ tuki 13
           <p class="caption" id="corpus-count"></p>
         </div>
         <ul class="corpus-list" id="corpus-list"></ul>
-        <p class="source" data-i18n-html="corpusSource"><strong>Fuente.</strong> Kaufman y Justeson (2001), “Lexical items”, pp. 2.91–2.97, y ejemplos de §1–2. Las palabras van con <b>h</b>, <b>ts</b> y <b>ü</b>; entre ⟨ ⟩ se deja su deletreo original (7 = ʔ, tz = ts, ʉ = ü). Solo se incluyen palabras que se pueden escribir con los signos de estas fuentes.</p>
+        <p class="source" data-i18n-html="corpusSource"><strong>Fuente.</strong> Kaufman y Justeson (2001), “Lexical items”, pp. 2.91–2.97, y ejemplos de §1–2. Las palabras van con <b>ts</b> y <b>ü</b>, y el saltillo como vocal sola al inicio o <b>'</b> dentro; entre ⟨ ⟩ se deja su deletreo original (7 = ʔ, tz = ts, ʉ = ü). Solo se incluyen palabras que se pueden escribir con los signos de estas fuentes.</p>
         </details>
       </div>
     </section>
@@ -187,14 +187,14 @@ tuki 13
           </div>
           <div class="card">
             <h3 data-i18n="about3Title">11 consonantes, 6 vocales</h3>
-            <p data-i18n-html="about3">Consonantes <b>p t ts k h s j m n w y</b> (la <b>h</b> es el saltillo, /ʔ/) y vocales <b>i e ü a u o</b> (<b>ü</b> es una vocal central, /ɨ/). Hoy se conocen los signos de 53 de las 66 sílabas posibles; las que faltan se muestran como ◌.</p>
+            <p data-i18n-html="about3">Consonantes <b>p t ts k s j m n w y</b> más el saltillo /ʔ/, cuya fila se escribe con la vocal sola, y vocales <b>i e ü a u o</b> (<b>ü</b> es una vocal central, /ɨ/). Hoy se conocen los signos de 53 de las 66 sílabas posibles; las que faltan se muestran como ◌.</p>
           </div>
           <div class="card">
             <h3 data-i18n="about4Title">Cómo se deletrea</h3>
-            <p data-i18n-html="about4">Una consonante final se escribe con la sílaba que repite la vocal anterior (<b>tsap</b> “cielo” → tsa·pa). <b>h j w y</b> no se escriben antes de otra consonante, y <b>k</b> no se escribe antes de <b>s</b>.</p>
+            <p data-i18n-html="about4">Una consonante final se escribe con la sílaba que repite la vocal anterior (<b>tsap</b> “cielo” → tsa·pa). El saltillo, <b>j</b>, <b>w</b> y <b>y</b> no se escriben antes de otra consonante, y <b>k</b> no se escribe antes de <b>s</b>.</p>
           </div>
         </div>
-        <p class="source" data-i18n-html="sources"><strong>Fuentes.</strong> Terrence Kaufman y John Justeson, <i>Epi-Olmec Hieroglyphic Writing and Texts</i> (2001), figura 4 y §1–2. Tabla del silabario redibujada a partir de esa figura. Aquí se escribe <b>h</b> por su <b>7</b> (ʔ) y <b>ts</b> por su <b>tz</b>. Las lecturas son las de los autores y algunas son tentativas.</p>
+        <p class="source" data-i18n-html="sources"><strong>Fuentes.</strong> Terrence Kaufman y John Justeson, <i>Epi-Olmec Hieroglyphic Writing and Texts</i> (2001), figura 4 y §1–2. Tabla del silabario redibujada a partir de esa figura. Aquí su <b>7</b> (ʔ) se escribe con la vocal sola al inicio y con <b>'</b> dentro de la palabra, y su <b>tz</b> como <b>ts</b>. Las lecturas son las de los autores y algunas son tentativas.</p>
         </details>
       </div>
     </section>
