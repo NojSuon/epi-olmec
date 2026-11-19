@@ -13,7 +13,6 @@
 //! Outputs: `fonts/*.ttf`, `site/data/glyphs.json`, `previews/*.png`.
 
 mod font;
-mod neography;
 mod numerals;
 mod preview;
 mod raster;
@@ -74,13 +73,6 @@ fn main() {
         let path = sources.join("cvc").join(format!("{}.png", s.name));
         signs.push(Sign { name: s.name.to_string(), shape: logogram_shape(&path) });
     }
-    // Neographies: modern proposals built from real signs (not attested).
-    for (c, v) in core::neography::all() {
-        let ((dc, dv), side) = core::neography::donor(c);
-        let donor = &signs.iter().find(|s| s.name == core::syllable_name(dc, dv, false)).expect("donor").shape;
-        let shape = neography::compose(donor, v, side, half);
-        signs.push(Sign { name: core::neography::name(c, v), shape });
-    }
     for n in 0..=19 {
         signs.push(Sign { name: core::numeral_name(n), shape: numerals::shape(n, half) });
     }
@@ -126,7 +118,6 @@ fn main() {
     }
 
     preview::compare(&compare, &["ki"], &out_prev.join("zoom.png"));
-    preview::neo(&compare, &out_prev.join("neographies.png"));
     preview::compare(&compare, &["pi", "ki", "sa", "ja", "kak", "pvk", "sky", "num0", "num13"], &out_prev.join("compare.png"));
 
     let meta = serde_json::json!({
@@ -142,10 +133,6 @@ fn main() {
         "logograms": core::LOGOGRAMS.iter().enumerate().map(|(i, l)| serde_json::json!({
             "name": l.name, "es": l.es, "en": l.en, "reading": l.reading,
             "cp": format!("{:04X}", core::logogram_codepoint(i) as u32),
-        })).collect::<Vec<_>>(),
-        "neo": core::neography::all().iter().map(|&(c, v)| serde_json::json!({
-            "name": core::neography::name(c, v), "label": core::syllable_label(c, v), "c": c, "v": v,
-            "cp": format!("{:04X}", core::neography::codepoint(c, v) as u32),
         })).collect::<Vec<_>>(),
         "cvc": core::CVC.iter().enumerate().map(|(i, s)| serde_json::json!({
             "name": s.name, "label": s.label,
@@ -335,9 +322,9 @@ fn font_spec<'a>(st: Style, drawn: &[(String, Vec<Contour>)], placeholder: &[Con
 
     let mut ligatures: Vec<(Vec<usize>, usize)> = Vec::new();
     let mut ss01 = Vec::new();
-    let consonant_spellings: [&[&str]; 13] = [
+    let consonant_spellings: [&[&str]; 11] = [
         // The glottal-stop row is the bare vowel; h 7 ' ʔ before it are silent spellings. tz = ts.
-        &["p"], &["t"], &["ts", "tz"], &["k"], &["", "h", "7", "'", "’", "ʼ", "ʔ"], &["s"], &["j"], &["m"], &["n"], &["w"], &["y"], &["l"], &["r"],
+        &["p"], &["t"], &["ts", "tz"], &["k"], &["", "h", "7", "'", "’", "ʼ", "ʔ"], &["s"], &["j"], &["m"], &["n"], &["w"], &["y"],
     ];
     let vowel_spellings: [&[&str]; 6] = [&["i"], &["e"], &["ü", "v", "ʉ", "ɨ"], &["a"], &["u"], &["o"]];
     let seq = |s: &str| -> Vec<usize> { s.chars().map(gin).collect() };
@@ -353,16 +340,6 @@ fn font_spec<'a>(st: Style, drawn: &[(String, Vec<Contour>)], placeholder: &[Con
         }
         if alt {
             ss01.push((g(&core::syllable_name(c, v, false)), gl));
-        }
-    }
-    // Neographies (modern proposals): typed like any syllable, e.g. ka, la.
-    for (c, v) in core::neography::all() {
-        let gl = g(&core::neography::name(c, v));
-        cmap.push((core::neography::codepoint(c, v), gl));
-        for cs in consonant_spellings[c] {
-            for vs in vowel_spellings[v] {
-                ligatures.push((seq(&format!("{cs}{vs}")), gl));
-            }
         }
     }
     for (i, l) in core::LOGOGRAMS.iter().enumerate() {

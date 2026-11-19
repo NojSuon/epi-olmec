@@ -41,9 +41,6 @@ pub enum Token {
     Cvc { index: usize, text: String },
     /// Typed but not written, by the spelling rules (weak consonants…).
     Silent { text: String },
-    /// A neography: a modern proposed sign for a syllable with no attested
-    /// sign (see `crate::neography`). Only produced when proposals are on.
-    Neo { c: usize, v: usize, text: String, echo: bool },
     Logogram { index: usize, text: String },
     Numeral { n: u32, text: String },
     Space,
@@ -93,9 +90,6 @@ fn units(word: &[char]) -> Vec<(Unit, String)> {
             'n' => Unit::C(8),
             'w' => Unit::C(9),
             'y' => Unit::C(10),
-            // Not Epi-Olmec sounds: written only with neographies.
-            'l' => Unit::C(11),
-            'r' => Unit::C(12),
             'i' => Unit::V(0),
             'e' => Unit::V(1),
             'ü' | 'v' | 'ʉ' | 'ɨ' => Unit::V(2),
@@ -111,17 +105,15 @@ fn units(word: &[char]) -> Vec<(Unit, String)> {
     out
 }
 
-fn syllable(c: usize, v: usize, text: String, echo: bool, neo: bool) -> Token {
+fn syllable(c: usize, v: usize, text: String, echo: bool) -> Token {
     if known(c, v) {
         Token::Syllable { c, v, alt: false, text, echo }
-    } else if neo && crate::neography::exists(c, v) {
-        Token::Neo { c, v, text, echo }
     } else {
         Token::Missing { label: syllable_label(c, v), text }
     }
 }
 
-fn spell_word(word: &[char], mode: Mode, neo: bool, out: &mut Vec<Token>) {
+fn spell_word(word: &[char], mode: Mode, out: &mut Vec<Token>) {
     let us = units(word);
     let mut last_vowel: Option<usize> = None;
     let mut i = 0;
@@ -154,7 +146,7 @@ fn spell_word(word: &[char], mode: Mode, neo: bool, out: &mut Vec<Token>) {
                     }
                 }
                 if let Some((Unit::V(v), vt)) = us.get(i + 1) {
-                    out.push(syllable(c, *v, format!("{text}{vt}"), false, neo));
+                    out.push(syllable(c, *v, format!("{text}{vt}"), false));
                     last_vowel = Some(*v);
                     i += 2;
                     continue;
@@ -175,14 +167,14 @@ fn spell_word(word: &[char], mode: Mode, neo: bool, out: &mut Vec<Token>) {
                     us[i..].iter().find_map(|(u, _)| if let Unit::V(v) = u { Some(*v) } else { None })
                 });
                 match echo {
-                    Some(v) => out.push(syllable(c, v, text, true, neo)),
+                    Some(v) => out.push(syllable(c, v, text, true)),
                     None => out.push(Token::Missing { label: CONSONANTS[c].label.into(), text }),
                 }
             }
             Unit::V(v) => {
                 // A vowel with no consonant before it is its own sign (the
                 // glottal-stop row of the chart: a, e, i…).
-                out.push(syllable(4, v, text, false, neo));
+                out.push(syllable(4, v, text, false));
                 last_vowel = Some(v);
                 i += 1;
             }
@@ -196,12 +188,6 @@ fn is_word_char(ch: char) -> bool {
 
 /// Spells a whole text.
 pub fn spell(input: &str, mode: Mode) -> Vec<Token> {
-    spell_with(input, mode, false)
-}
-
-/// Like `spell`, and with `neo` syllables that have no attested sign (ka,
-/// la, ra…) are written with their neography instead of a placeholder.
-pub fn spell_with(input: &str, mode: Mode, neo: bool) -> Vec<Token> {
     let chars: Vec<char> = input.chars().flat_map(|c| c.to_lowercase()).collect();
     let mut out = Vec::new();
     let mut i = 0;
@@ -252,7 +238,7 @@ pub fn spell_with(input: &str, mode: Mode, neo: bool) -> Vec<Token> {
             while i < chars.len() && is_word_char(chars[i]) {
                 i += 1;
             }
-            spell_word(&chars[start..i], mode, neo, &mut out);
+            spell_word(&chars[start..i], mode, &mut out);
         } else {
             out.push(Token::Other { text: ch.to_string() });
             i += 1;
@@ -363,33 +349,5 @@ mod corpus_tests {
             n += 1;
         }
         assert!(n > 60);
-    }
-}
-
-
-#[cfg(test)]
-mod neo_tests {
-    use super::*;
-
-    fn g(input: &str, neo: bool) -> Vec<String> {
-        spell_with(input, Mode::Auto, neo)
-            .into_iter()
-            .filter_map(|t| match t {
-                Token::Syllable { c, v, alt, .. } => Some(crate::syllable_name(c, v, alt)),
-                Token::Neo { c, v, .. } => Some(crate::neography::name(c, v)),
-                Token::Missing { label, .. } => Some(format!("?{label}")),
-                _ => None,
-            })
-            .collect()
-    }
-
-    #[test]
-    fn proposals_fill_the_gaps() {
-        assert_eq!(g("ka no e", false), ["?ka", "?no", "?e"]);
-        assert_eq!(g("ka no e", true), ["neo.ka", "neo.no", "neo.e"]);
-        // l and r: a final r repeats the vowel, like any strong consonant.
-        assert_eq!(g("laura", true), ["neo.la", "u", "neo.ra"]);
-        assert_eq!(g("mar", true), ["ma", "neo.ra"]);
-        assert_eq!(g("pa", true), ["pa"]);
     }
 }

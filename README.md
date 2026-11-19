@@ -55,18 +55,6 @@ With **Epi-Olmec rules** turned on (the default), the keyboard spells words the 
 
 Syllables with no known sign show as ◌: tso, ka, e, se, so, jü, mu, mo, no, wu, yi, yu, yo. Kaufman & Justeson (2001, p. 2.6) give no sign for them, and we found no other published proposal.
 
-## Neographies (modern proposals)
-
-The keyboard and fonts also include **25 neographies**: signs proposed by this project, **not attested in any inscription**. They cover the 13 syllables of the language with no known sign (tso, ka, e, se, so, jü, mu, mo, no, wu, yi, yu, yo) and the **l** and **r** rows, which Epi-Olmec and its Mixe-Zoquean relatives did not have, for modern names and loanwords.
-
-They follow one rule, so they read as a system (`crates/core/src/neography.rs`):
-
-1. **Consonant:** a real sign of the same row, shrunk to the top of the block (pü, to, tse, ku, i, su, jo, mü, na, we, yü).
-2. **Vowel:** a mark below it: i `|`, e `||`, ü `○`, a `—`, u `∪`, o `◇`.
-3. **l and r:** l starts from a y sign (an older l became y in Mixe-Zoquean) with a straight stroke on the left; r starts from a t sign with a zigzag stroke.
-
-On the site they appear in their own table, "Propuestas · neografías", with dashed keys and an N badge. A switch turns them off, so the text shows ◌ for missing syllables instead. When they are used, a note under the preview lists them and reading labels mark them with *. In the fonts they are typed like any syllable (`ka`, `la`) and have code points from U+E400.
-
 ## Corpus
 
 `site/data/corpus.json` lists 76 words read by Kaufman & Justeson (2001, lexical items pp. 2.91–2.97 and §1–2), with glosses in Spanish and English, their original spelling and what to type here. The site shows them with their signs and a search box. `cargo test` checks that every entry spells with known signs only.

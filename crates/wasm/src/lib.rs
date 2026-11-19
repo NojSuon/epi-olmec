@@ -1,7 +1,7 @@
 //! WebAssembly bindings: the browser keyboard calls `spell` on every
 //! keystroke and draws the signs it returns.
 
-use epi_olmec_core::{neography, spell_with, syllable_name, Mode, Token, CVC, LOGOGRAMS};
+use epi_olmec_core::{spell as spell_text, syllable_name, Mode, Token, CVC, LOGOGRAMS};
 use wasm_bindgen::prelude::*;
 
 fn esc(s: &str) -> String {
@@ -23,13 +23,11 @@ fn esc(s: &str) -> String {
 /// Spells `input` and returns a JSON array of tokens:
 /// `{"k":"sign","g":"pa","t":"pa"}`, `{"k":"missing","l":"ka","t":"ka"}`,
 /// `{"k":"silent","t":"y"}`, `{"k":"space"}`, `{"k":"break"}`,
-/// `{"k":"other","t":"?"}`. `auto` applies the spelling rules; `neo` writes
-/// syllables with no attested sign with their neography
-/// (`{"k":"sign","g":"neo.ka","neo":true}`).
+/// `{"k":"other","t":"?"}`. `auto` applies the spelling rules.
 #[wasm_bindgen]
-pub fn spell(input: &str, auto: bool, neo: bool) -> String {
+pub fn spell(input: &str, auto: bool) -> String {
     let mode = if auto { Mode::Auto } else { Mode::Literal };
-    let items: Vec<String> = spell_with(input, mode, neo)
+    let items: Vec<String> = spell_text(input, mode)
         .into_iter()
         .map(|t| match t {
             Token::Syllable { c, v, alt, text, echo } => format!(
@@ -40,9 +38,6 @@ pub fn spell(input: &str, auto: bool, neo: bool) -> String {
             ),
             Token::Logogram { index, text } => {
                 format!(r#"{{"k":"sign","g":{},"t":{},"logo":true}}"#, esc(LOGOGRAMS[index].name), esc(&text))
-            }
-            Token::Neo { c, v, text, .. } => {
-                format!(r#"{{"k":"sign","g":{},"t":{},"neo":true}}"#, esc(&neography::name(c, v)), esc(&text))
             }
             Token::Cvc { index, text } => format!(r#"{{"k":"sign","g":{},"t":{},"cvc":true}}"#, esc(CVC[index].name), esc(&text)),
             Token::Numeral { n, text } => format!(r#"{{"k":"sign","g":"num{n}","t":{}}}"#, esc(&text)),
