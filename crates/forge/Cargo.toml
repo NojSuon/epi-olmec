@@ -1,0 +1,14 @@
+[package]
+name = "epi-olmec-forge"
+description = "Vectorizes the source glyphs and builds the three Epi-Olmec fonts"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+epi-olmec-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+image = { version = "0.25", default-features = false, features = ["png"] }
+tiny-skia = "0.11"
+write-fonts = "0.56"
+kurbo = "0.13"

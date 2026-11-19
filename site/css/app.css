@@ -1,0 +1,255 @@
+/* Epi-Olmec keyboard: page-specific styles on top of mati.css (brand tokens). */
+
+/* Sticky header: the keyboard and the preview share one screen. */
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.button--light { background: var(--surface); color: var(--mati-cacao-rojo); }
+.button--ghost { background: transparent; color: var(--on-solid); box-shadow: inset 0 0 0 2px currentColor; }
+.button--soft { background: var(--serie-fondo); color: var(--serie-texto); }
+.hero-sample {
+  background: var(--mati-pastel-rosa-crema);
+  border-radius: var(--r-card-lg);
+  padding: 20px;
+  display: grid; place-items: center;
+}
+.hero-sample canvas { width: 220px; height: auto; display: block; }
+
+.field-label { display: block; font-family: var(--font-titulo); font-weight: 600; margin-bottom: 8px; }
+
+/* ---------- Studio: input on the left, preview on the right ---------- */
+.studio {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 28px;
+  align-items: start;
+}
+.studio-input, .studio-output {
+  background: var(--serie-fondo);
+  border-radius: var(--r-card-lg);
+  padding: clamp(18px, 3vw, 28px);
+  min-width: 0;
+}
+.studio-output { position: sticky; top: 12px; }
+
+#text {
+  width: 100%;
+  min-height: 120px;
+  resize: vertical;
+  font: 700 22px/1.45 var(--font-cuerpo);
+  color: var(--mati-tinta);
+  background: var(--surface);
+  border: 2px solid transparent;
+  border-radius: 18px;
+  padding: 14px 16px;
+}
+#text:focus { outline: none; border-color: var(--serie-solido); }
+.studio-input .caption { margin-top: 8px; font-size: 14px; max-width: none; }
+
+.mode-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 18px; }
+.mode-switch .field-label { margin: 0 6px 0 0; }
+.chip { position: relative; cursor: pointer; }
+.chip input { position: absolute; opacity: 0; pointer-events: none; }
+.chip span {
+  display: inline-block; padding: 7px 14px; border-radius: 999px;
+  font: 600 15px var(--font-titulo);
+  background: var(--surface); color: var(--serie-texto);
+  border: 2px solid transparent;
+}
+.chip input:checked + span { background: var(--serie-solido); color: var(--on-solid); }
+.chip input:focus-visible + span { outline: 3px solid var(--mati-turquesa-mar); outline-offset: 2px; }
+
+/* ---------- Sign pad (like a kana table) ---------- */
+.pad { margin-top: 22px; }
+.pad h3 { font-size: 17px; margin: 18px 0 8px; color: var(--serie-texto); }
+.pad-table { display: grid; grid-template-columns: 34px repeat(6, minmax(0, 1fr)); gap: 4px; }
+.pad-head {
+  font: 700 15px var(--font-titulo); color: var(--serie-texto);
+  display: grid; place-items: center; min-height: 26px;
+}
+.pad-key, .pad-empty {
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  min-width: 0;
+}
+.pad-key {
+  position: relative;
+  border: 0; padding: 4px 2px 14px; cursor: pointer;
+  background: var(--surface); color: var(--mati-tinta);
+  display: grid; place-items: center;
+  transition: transform .1s ease, background .1s ease;
+}
+.pad-key svg { width: 100%; height: 100%; fill: currentColor; }
+.pad-key .k {
+  position: absolute; left: 0; right: 0; bottom: 2px;
+  font: 700 11px var(--font-cuerpo); color: var(--mati-cafe-tierra); line-height: 1;
+}
+.pad-key:hover, .pad-key:focus-visible { background: var(--serie-solido); color: var(--on-solid); transform: translateY(-1px); }
+.pad-key:hover .k, .pad-key:focus-visible .k { color: var(--on-solid); }
+.pad-key .alt-dot {
+  position: absolute; top: 4px; right: 5px; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--serie-acento);
+}
+.pad-empty { background: repeating-linear-gradient(45deg, transparent 0 6px, rgb(0 0 0 / 0.04) 6px 8px); }
+.pad-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 6px; }
+.pad-row .pad-key { aspect-ratio: auto; height: 72px; padding-bottom: 16px; }
+.pad-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.pad-tools button {
+  font: 600 14px var(--font-titulo); border: 0; cursor: pointer;
+  padding: 8px 14px; border-radius: 999px; background: var(--surface); color: var(--serie-texto);
+}
+.pad-tools button:hover { background: var(--serie-solido); color: var(--on-solid); }
+
+/* ---------- Preview ---------- */
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 14px; }
+.seg { display: inline-flex; background: var(--surface); border-radius: 999px; padding: 4px; gap: 2px; }
+.seg button {
+  border: 0; cursor: pointer; border-radius: 999px; padding: 6px 16px;
+  background: transparent; color: var(--serie-texto);
+  font: 600 16px var(--font-titulo);
+  display: inline-flex; align-items: baseline; gap: 6px;
+}
+.seg button small { font: 400 12px var(--font-cuerpo); color: var(--mati-cafe-tierra); }
+.seg button[aria-pressed="true"] { background: var(--serie-solido); color: var(--on-solid); }
+.seg button[aria-pressed="true"] small { color: var(--on-solid); opacity: .85; }
+
+/* Checkerboard = transparent background. */
+.stage {
+  border-radius: var(--r-card);
+  min-height: 320px;
+  max-height: 62vh;
+  overflow: auto;
+  display: grid; place-items: center;
+  padding: 16px;
+  background-color: #fff;
+  background-image:
+    linear-gradient(45deg, #ece6e2 25%, transparent 25%),
+    linear-gradient(-45deg, #ece6e2 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ece6e2 75%),
+    linear-gradient(-45deg, transparent 75%, #ece6e2 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+}
+[data-theme="dark"] .stage {
+  background-color: #2a2220;
+  background-image:
+    linear-gradient(45deg, #342b28 25%, transparent 25%),
+    linear-gradient(-45deg, #342b28 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #342b28 75%),
+    linear-gradient(-45deg, transparent 75%, #342b28 75%);
+}
+#canvas { max-width: 100%; height: auto; }
+.stage-note { margin-top: 8px; min-height: 1.4em; }
+
+.controls {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 20px; margin-top: 14px;
+}
+.control { display: grid; gap: 6px; font: 600 15px var(--font-titulo); min-width: 0; border: 0; padding: 0; margin: 0; }
+.control legend { padding: 0; margin-bottom: 6px; }
+.control input[type="range"] { width: 100%; accent-color: var(--serie-solido); }
+.control--colors, .control--checks { grid-column: 1 / -1; }
+.control--checks { display: flex; flex-wrap: wrap; gap: 8px 18px; font: 400 15px var(--font-cuerpo); }
+.check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+.check input { width: 18px; height: 18px; accent-color: var(--serie-solido); }
+
+.swatches { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.swatch {
+  width: 32px; height: 32px; border-radius: 50%; cursor: pointer; padding: 0;
+  border: 2px solid var(--surface); box-shadow: 0 0 0 1px rgb(0 0 0 / .15);
+}
+.swatch[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--serie-solido); }
+.swatch--none {
+  background: conic-gradient(#ece6e2 0 25%, #fff 0 50%, #ece6e2 0 75%, #fff 0) 0 0 / 12px 12px;
+}
+.swatch-custom { position: relative; width: 32px; height: 32px; }
+.swatch-custom input {
+  width: 32px; height: 32px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+  background: none;
+}
+.swatch-custom input::-webkit-color-swatch-wrapper { padding: 0; }
+.swatch-custom input::-webkit-color-swatch { border-radius: 50%; border: 2px solid var(--surface); }
+
+.export { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-top: 18px; }
+.control--inline { display: flex; align-items: center; gap: 8px; }
+.control select {
+  height: 44px; padding: 0 12px; border-radius: 14px; border: 2px solid transparent;
+  background: var(--surface); color: var(--mati-tinta); font: 600 15px var(--font-cuerpo);
+}
+.export .button { font-size: 16px; padding: 10px 18px; }
+#export-status { flex-basis: 100%; min-height: 1.4em; }
+
+/* ---------- Fonts ---------- */
+.font-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.font-card {
+  background: var(--serie-fondo); border-radius: var(--r-card);
+  padding: 24px; display: flex; flex-direction: column; gap: 12px;
+}
+.font-card h3 { color: var(--serie-texto); }
+.font-card .sample {
+  background: var(--surface); border-radius: 18px; padding: 18px;
+  height: 260px; overflow: hidden;
+  font-size: 64px; line-height: 1.15; color: var(--mati-tinta);
+  writing-mode: vertical-lr; text-orientation: upright;
+  font-feature-settings: "liga" 1;
+}
+.font-card .button { align-self: flex-start; }
+.font-howto { margin-top: 24px; }
+.font-howto ul { margin: 10px 0 0; padding-left: 20px; }
+.font-howto li { margin-top: 6px; }
+.font-howto code { font-size: 14px; background: var(--serie-fondo); padding: 1px 6px; border-radius: 6px; }
+
+.about .card p { margin-top: 8px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 980px) {
+  .studio { grid-template-columns: 1fr; }
+  .studio-output { position: static; }
+}
+@media (max-width: 560px) {
+  .controls { grid-template-columns: 1fr; }
+  .pad-table { grid-template-columns: 26px repeat(6, minmax(0, 1fr)); gap: 3px; }
+  .pad-key .k { font-size: 10px; }
+  .hero-sample { display: none; }
+}
+.lang-switch { background: transparent; cursor: pointer; }
+
+/* ---------- Purple identity: Mati Mati "Jacaranda" series (§4 C) ----------
+   Berenjena (solid) + Lila Suave (pastel) + Guayaba (accent), and Jacaranda /
+   Glicina for details. Overrides the brand's default terracota hero and
+   cacao footer for this site only. */
+:root {
+  --violet-solid: #4A2F5B;     /* Berenjena — white text 11.4:1 */
+  --violet-mid: #7A63A8;       /* Jacaranda — white text 5.0:1 */
+  --violet-soft: #A898C9;      /* Glicina */
+  --violet-pastel: #E8E4F1;    /* Lila Suave — Tinta 13.1:1 */
+  --violet-pastel-2: #DBD6E5;  /* Lavanda Humo */
+  --footer: var(--violet-solid);
+}
+.hero { background: var(--violet-solid); }
+.hero .tag { background: var(--violet-pastel); color: var(--violet-solid); }
+.button--light { color: var(--violet-solid); }
+.hero-sample { background: var(--violet-pastel); }
+.site-nav a:hover, .site-nav a[aria-current="page"] { background: var(--violet-pastel); color: var(--violet-solid); }
+.lang-switch, .theme-toggle { border-color: var(--violet-solid); color: var(--violet-solid); }
+.lang-switch:hover, .lang-switch:focus-visible,
+.theme-toggle:hover, .theme-toggle:focus-visible { background: var(--violet-solid); color: var(--mati-papel); }
+.cta-card { background: var(--violet-pastel-2); }
+.cta-card h2 { color: var(--violet-solid); }
+.donate::before { color: var(--violet-solid); }
+/* P05-style woven diamonds in lila, in place of the terracota greca. */
+.pattern-violet {
+  background-color: var(--violet-pastel);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='24' viewBox='0 0 32 24'%3E%3Cpath d='M0 12 8 4l8 8-8 8zM16 12l8-8 8 8-8 8z' fill='none' stroke='%23A898C9' stroke-width='2.5'/%3E%3Ccircle cx='8' cy='12' r='2' fill='%237A63A8'/%3E%3Ccircle cx='24' cy='12' r='2' fill='%237A63A8'/%3E%3C/svg%3E");
+  background-size: 32px 24px;
+}
+:root[data-theme="dark"] {
+  --footer: #2C1C38;
+  --violet-pastel: #2C2438;
+  --violet-pastel-2: #33293F;
+}
+:root[data-theme="dark"] .hero { background: #3A2548; }
+:root[data-theme="dark"] .hero .tag { background: #E8E4F1; color: #4A2F5B; }
+:root[data-theme="dark"] .button--light { background: #E8E4F1; color: #4A2F5B; }
+:root[data-theme="dark"] .lang-switch,
+:root[data-theme="dark"] .theme-toggle,
+:root[data-theme="dark"] .cta-card h2,
+:root[data-theme="dark"] .site-nav a:hover { color: #C9B3EA; border-color: #C9B3EA; }

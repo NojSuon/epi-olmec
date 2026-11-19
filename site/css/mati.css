@@ -1,0 +1,679 @@
+/* Mati Mati — design tokens from Manual de Identidad Visual v2.0, §13 A */
+:root {
+  --mati-tinta: #2B1D1A;
+  --mati-papel: #FFF9F5;
+  --mati-blanco: #FFFFFF;
+
+  --mati-terracota-mati: #C1502E;
+  --mati-guajillo: #A3402A;
+  --mati-cacao-rojo: #7A2E1D;
+  --mati-mostaza: #D9A93F;
+  --mati-ocre: #9C5400;
+  --mati-turquesa-mar: #44989D;
+  --mati-jade: #3A7A6D;
+  --mati-petroleo: #2F6B73;
+  --mati-magenta-tinta: #9A2157;
+  --mati-ciruela: #683547;
+  --mati-cafe-tierra: #5A3F33;
+  --mati-piedra: #7A6B62;
+  --mati-pino: #2F5D4E;
+  --mati-berenjena: #4A2F5B;
+  --mati-anil: #2E4A7D;
+  --mati-miel: #C98A2E;
+  --mati-cempasuchil: #DE7D2A;
+  --mati-guayaba: #E08C8C;
+
+  --mati-pastel-rosa-crema: #FFE7E0;
+  --mati-pastel-barro-claro: #E8CBC2;
+  --mati-pastel-espuma: #CDDFDD;
+  --mati-pastel-brote: #D8E6D0;
+  --mati-pastel-lila-suave: #E8E4F1;
+  --mati-pastel-escarcha: #CBD5E1;
+  --mati-pastel-papel-amate: #EBE3DE;
+
+  --font-titulo: "Fredoka", "Noto Sans", system-ui, sans-serif;
+  --font-cuerpo: "Nunito Sans", "Noto Sans", system-ui, sans-serif;
+  /* Chinese pages: Noto Sans SC for the Han characters. */
+
+  /* Radii — §12: tags 14, small cards 28–30, large cards 40–50 */
+  --r-tag: 14px;
+  --r-card: 28px;
+  --r-card-lg: 44px;
+
+  /* Active colour series (60 · 30 · 10). Default: serie Mati. */
+  --serie-fondo: var(--mati-pastel-rosa-crema);
+  --serie-solido: var(--mati-terracota-mati);
+  --serie-acento: var(--mati-mostaza);
+  --serie-texto: var(--mati-cacao-rojo);
+
+  /* Semantic colours, redefined by the dark theme below. */
+  --surface: var(--mati-blanco);          /* cards, boxes, tables */
+  --on-solid: var(--mati-blanco);         /* text on a solid colour */
+  --ink-fixed: #2B1D1A;                   /* text that stays dark (on mostaza) */
+  --footer: var(--mati-cacao-rojo);
+  --donate-hover: var(--mati-blanco);
+  --error: var(--mati-guajillo);
+  --shadow: rgb(43 29 26 / 0.12);
+  color-scheme: light;
+}
+
+html:lang(zh) {
+  --font-titulo: "Fredoka", "Noto Sans SC", system-ui, sans-serif;
+  --font-cuerpo: "Nunito Sans", "Noto Sans SC", system-ui, sans-serif;
+}
+
+/* Paletas de serie, §4 C */
+[data-serie="mar"] {
+  --serie-fondo: var(--mati-pastel-espuma);
+  --serie-solido: var(--mati-petroleo);
+  --serie-acento: var(--mati-jade);
+  --serie-texto: var(--mati-petroleo);
+}
+[data-serie="milpa"] {
+  --serie-fondo: var(--mati-pastel-brote);
+  --serie-solido: var(--mati-pino);
+  --serie-acento: var(--mati-cempasuchil);
+  --serie-texto: var(--mati-pino);
+}
+[data-serie="anil"] {
+  --serie-fondo: var(--mati-pastel-escarcha);
+  --serie-solido: var(--mati-anil);
+  --serie-acento: var(--mati-miel);
+  --serie-texto: var(--mati-anil);
+}
+[data-serie="ciruela"] {
+  --serie-fondo: var(--mati-pastel-barro-claro);
+  --serie-solido: var(--mati-ciruela);
+  --serie-acento: var(--mati-mostaza);
+  --serie-texto: var(--mati-ciruela);
+}
+[data-serie="ocre"] {
+  --serie-fondo: var(--mati-pastel-papel-amate);
+  --serie-solido: var(--mati-cafe-tierra);
+  --serie-acento: var(--mati-cempasuchil);
+  --serie-texto: var(--mati-cafe-tierra);
+}
+[data-serie="jade"] {
+  --serie-fondo: var(--mati-pastel-espuma);
+  --serie-solido: var(--mati-jade);
+  --serie-acento: var(--mati-guayaba);
+  --serie-texto: var(--mati-jade);
+}
+[data-serie="cempasuchil"] {
+  --serie-fondo: var(--mati-pastel-rosa-crema);
+  --serie-solido: var(--mati-ocre);
+  --serie-acento: var(--mati-cempasuchil);
+  --serie-texto: var(--mati-ocre);
+}
+[data-serie="selva"] {
+  --serie-fondo: var(--mati-pastel-brote);
+  --serie-solido: var(--mati-petroleo);
+  --serie-acento: var(--mati-magenta-tinta);
+  --serie-texto: var(--mati-pino);
+}
+[data-serie="marisma"] {
+  --serie-fondo: var(--mati-pastel-escarcha);
+  --serie-solido: var(--mati-petroleo);
+  --serie-acento: var(--mati-guayaba);
+  --serie-texto: var(--mati-anil);
+}
+[data-serie="lapacho"] {
+  --serie-fondo: var(--mati-pastel-rosa-crema);
+  --serie-solido: var(--mati-magenta-tinta);
+  --serie-acento: var(--mati-mostaza);
+  --serie-texto: var(--mati-magenta-tinta);
+}
+[data-serie="guajira"] {
+  --serie-fondo: #FBE6CF;
+  --serie-solido: var(--mati-ocre);
+  --serie-acento: var(--mati-magenta-tinta);
+  --serie-texto: #8A4B12;
+}
+[data-serie="jacaranda"] {
+  --serie-fondo: var(--mati-pastel-lila-suave);
+  --serie-solido: var(--mati-berenjena);
+  --serie-acento: var(--mati-guayaba);
+  --serie-texto: var(--mati-berenjena);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--mati-papel);
+  color: var(--mati-tinta);
+  font-family: var(--font-cuerpo);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+img, svg { display: block; max-width: 100%; }
+
+a { color: inherit; }
+
+h1, h2, h3 {
+  font-family: var(--font-titulo);
+  margin: 0;
+  text-wrap: balance;
+}
+h1 { font-weight: 700; font-size: clamp(40px, 6vw, 56px); line-height: 1.15; }
+h2 { font-weight: 600; font-size: clamp(28px, 3.4vw, 32px); line-height: 1.25; color: var(--serie-texto); }
+h3 { font-weight: 600; font-size: 22px; line-height: 1.3; }
+
+p { margin: 0; max-width: 65ch; }
+
+.caption { font-size: 13px; line-height: 1.4; color: var(--mati-cafe-tierra); }
+
+.wrap { width: min(1120px, 100% - 32px); margin-inline: auto; }
+
+.skip-link {
+  position: absolute; left: 16px; top: -100px;
+  background: var(--mati-tinta); color: var(--mati-papel);
+  padding: 8px 16px; border-radius: var(--r-tag); z-index: 10;
+}
+.skip-link:focus { top: 16px; }
+
+:focus-visible { outline: 3px solid var(--mati-turquesa-mar); outline-offset: 3px; }
+
+/* Words in an indigenous language: always Fredoka Bold with an accent colour
+   (§12). Fredoka lacks the line-below mark (u̱, o̱…; §5 character coverage),
+   so .lb draws it as an underline and .lb-mark hides the real character. */
+.lang {
+  font-family: var(--font-titulo);
+  font-weight: 700;
+  color: var(--serie-texto);
+}
+.lb {
+  position: relative;
+  text-decoration: underline;
+  text-decoration-thickness: 0.09em;
+  text-underline-offset: 0.12em;
+  text-decoration-skip-ink: none;
+}
+.lb-mark {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Tags / badges — Fredoka 600, 14px, +0.02em, radius 14px */
+.tag {
+  display: inline-block;
+  font-family: var(--font-titulo);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  padding: 7px 12px;
+  border-radius: var(--r-tag);
+  background: var(--serie-solido);
+  color: var(--on-solid);
+}
+.tag--suave { background: var(--surface); color: var(--serie-texto); }
+
+.button {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-titulo); font-weight: 600; font-size: 17px;
+  padding: 12px 22px; border-radius: 999px; border: 0;
+  background: var(--serie-solido); color: var(--on-solid);
+  text-decoration: none; cursor: pointer;
+}
+.button:hover { filter: brightness(0.92); }
+
+/* ---------- Header ---------- */
+.site-header { background: var(--mati-papel); border-bottom: 1px solid var(--mati-pastel-papel-amate); }
+.site-header .wrap {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; min-height: 76px;
+}
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--mati-tinta); }
+.brand svg { width: 44px; height: 44px; }
+.brand span { font-family: var(--font-titulo); font-weight: 600; font-size: 20px; }
+.site-nav ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.site-nav a {
+  display: block; padding: 8px 14px; border-radius: 999px;
+  font-family: var(--font-titulo); font-weight: 500; font-size: 16px;
+  text-decoration: none;
+}
+.site-nav a:hover { background: var(--mati-pastel-rosa-crema); }
+.site-nav a[aria-current="page"] { background: var(--mati-pastel-rosa-crema); color: var(--mati-cacao-rojo); }
+
+/* ---------- Patterns (soft mode: pastel + mid-tone stroke) ---------- */
+/* P01 Greca escalonada — terracota family */
+.pattern-p01 {
+  background-color: var(--mati-pastel-rosa-crema);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24' viewBox='0 0 48 24'%3E%3Cpath d='M0 18h8v-6h8V6h8v6h8v6h8v-6h8' fill='none' stroke='%23E8A58E' stroke-width='3'/%3E%3Ccircle cx='20' cy='19' r='2' fill='%23E8A58E'/%3E%3Ccircle cx='44' cy='5' r='2' fill='%23E8A58E'/%3E%3C/svg%3E");
+  background-size: 48px 24px;
+}
+/* P02 Oleaje — turquesa family */
+.pattern-p02 {
+  background-color: var(--mati-pastel-espuma);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='24' viewBox='0 0 48 24'%3E%3Cpath d='M0 12c6-8 18-8 24 0s18 8 24 0' fill='none' stroke='%2389BDB9' stroke-width='3'/%3E%3C/svg%3E");
+  background-size: 48px 24px;
+}
+.pattern-strip { height: 24px; }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: var(--footer);
+  color: var(--on-solid);
+  padding: 40px 0;
+  margin-top: 80px;
+}
+.site-footer .wrap { display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center; }
+.site-footer .brand { color: var(--on-solid); }
+.site-footer p { font-size: 15px; }
+.site-footer a { color: var(--on-solid); }
+
+/* ---------- Home ---------- */
+.hero {
+  background: var(--mati-terracota-mati);
+  color: var(--on-solid);
+}
+.hero .wrap {
+  display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center;
+  padding-block: 64px;
+}
+.hero h1 { max-width: 16ch; }
+.hero p { font-size: 20px; margin-top: 16px; max-width: 44ch; }
+.hero .hero-logo {
+  width: clamp(180px, 24vw, 260px); height: auto; aspect-ratio: 1 / 1;
+  object-fit: contain; border-radius: var(--r-card);
+}
+.hero .tag { background: var(--mati-pastel-rosa-crema); color: var(--mati-cacao-rojo); margin-bottom: 20px; }
+
+.intro { padding-block: 64px 24px; }
+.intro-card {
+  background: var(--mati-pastel-rosa-crema);
+  border-radius: var(--r-card-lg);
+  padding: clamp(28px, 5vw, 56px);
+  display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px;
+}
+.intro-card h2 { color: var(--mati-cacao-rojo); margin-bottom: 16px; }
+.intro-card p + p { margin-top: 12px; }
+.pillars { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.pillars li {
+  background: var(--surface); border-radius: var(--r-card);
+  padding: 18px 22px;
+}
+.pillars strong { font-family: var(--font-titulo); font-weight: 600; font-size: 19px; color: var(--mati-cacao-rojo); display: block; }
+
+.languages { padding-block: 40px; }
+.section-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; margin-bottom: 28px; }
+.section-head h2 { color: var(--mati-cacao-rojo); }
+
+.language-grid {
+  display: grid; gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+.language-card {
+  position: relative;
+  display: flex; flex-direction: column; gap: 10px;
+  background: var(--serie-fondo);
+  border-radius: var(--r-card);
+  padding: 28px;
+  min-height: 280px;
+  text-decoration: none;
+  color: var(--mati-tinta);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+a.language-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px var(--shadow); }
+.language-card .tag { align-self: flex-start; }
+.language-card .endonym { font-size: 40px; line-height: 1.1; margin-top: 8px; }
+.language-card .name { font-family: var(--font-titulo); font-weight: 600; font-size: 20px; }
+.language-card .region { font-size: 15px; color: var(--mati-cafe-tierra); }
+.language-card .summary { font-size: 16px; margin-top: auto; }
+.language-card .go { font-family: var(--font-titulo); font-weight: 600; color: var(--serie-texto); }
+.language-card[aria-disabled="true"] .tag { background: var(--surface); color: var(--serie-texto); }
+.language-card .family { font-size: 14px; font-weight: 700; color: var(--serie-texto); }
+.language-card[hidden], .continent[hidden] { display: none; }
+
+/* Filters (family, region) above the list, and one section per continent. */
+.language-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 16px 24px; margin-bottom: 36px; }
+.language-filters .field { display: grid; gap: 6px; min-width: min(100%, 240px); }
+.language-filters .field span { font-family: var(--font-titulo); font-weight: 600; }
+.language-filters select {
+  height: 48px; padding: 0 14px; border-radius: 14px;
+  font: 600 16px var(--font-cuerpo); color: var(--mati-tinta);
+  background: var(--surface); border: 2px solid var(--mati-cafe-tierra);
+}
+.language-filters select:focus-visible { outline: 3px solid var(--mati-cacao-rojo); outline-offset: 2px; }
+.language-filters .caption { margin: 0 0 12px; font-size: 15px; }
+.continent + .continent { margin-top: 48px; }
+.continent h3 { color: var(--mati-cacao-rojo); margin-bottom: 20px; }
+.continent-soon { font-size: 16px; }
+.link-button {
+  background: none; border: 0; padding: 0; font: inherit; font-weight: 700;
+  color: var(--mati-cacao-rojo); text-decoration: underline; cursor: pointer;
+}
+
+.cta { padding-block: 24px 0; }
+.cta-card {
+  background: var(--mati-pastel-barro-claro);
+  border-radius: var(--r-card-lg);
+  padding: clamp(28px, 5vw, 48px);
+  display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between;
+}
+.cta-card h2 { color: var(--mati-cacao-rojo); }
+
+/* ---------- Language page ---------- */
+.lang-hero { background: var(--serie-solido); color: var(--on-solid); }
+/* Slim title bar: the conjugator should be visible without scrolling. */
+.lang-hero .wrap {
+  display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 14px; row-gap: 2px;
+  padding-block: 16px;
+}
+.lang-hero .lang { color: var(--on-solid); font-size: clamp(30px, 5vw, 40px); line-height: 1.1; }
+.lang-hero h1 { font-size: clamp(16px, 2.4vw, 20px); font-weight: 500; line-height: 1.3; }
+#conjugador { padding-top: 28px; }
+
+.subnav {
+  position: sticky; top: 0; z-index: 5;
+  background: var(--mati-papel);
+  border-bottom: 1px solid var(--mati-pastel-papel-amate);
+}
+.subnav ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 10px 0; overflow-x: auto; scrollbar-width: none; }
+.subnav ul::-webkit-scrollbar { display: none; }
+.subnav a {
+  display: block; white-space: nowrap; padding: 8px 16px; border-radius: 999px;
+  font-family: var(--font-titulo); font-weight: 500; text-decoration: none;
+}
+.subnav a:hover, .subnav a.active { background: var(--serie-fondo); color: var(--serie-texto); }
+
+.section { padding-block: 56px 8px; scroll-margin-top: 64px; }
+.section > .wrap > h2 { margin-bottom: 16px; }
+.section .lead { font-size: 20px; margin-bottom: 24px; }
+.stack > * + * { margin-top: 14px; }
+
+.card {
+  background: var(--serie-fondo);
+  border-radius: var(--r-card);
+  padding: 24px 28px;
+}
+.card--blanca { background: var(--surface); border: 1px solid var(--mati-pastel-papel-amate); }
+.grid-2 { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.grid-3 { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+
+.letters {
+  display: grid; gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  list-style: none; padding: 0; margin: 0;
+}
+.letters li {
+  background: var(--surface); border: 1px solid var(--mati-pastel-papel-amate);
+  border-radius: var(--r-card); padding: 14px 18px;
+}
+.letters .letter-head { display: flex; align-items: baseline; gap: 8px; }
+.letters .letter { font-size: 34px; line-height: 1.1; display: block; }
+/* IPA symbols (ʃ, θ, ɲ, ʔ…) are not in Fredoka or Nunito Sans. */
+.ipa { font-family: "Noto Sans", sans-serif; }
+.letters .ipa { font-size: 16px; color: var(--mati-cafe-tierra); }
+.letters .word { font-weight: 700; display: block; margin-top: 6px; }
+.letters .meaning { font-size: 14px; color: var(--mati-cafe-tierra); }
+
+.vowels { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0; margin: 10px 0 0; }
+.vowels li {
+  background: var(--surface); border-radius: var(--r-tag);
+  padding: 8px 14px; display: flex; align-items: baseline; gap: 8px;
+}
+.vowels .lang { font-size: 26px; }
+.vowels .ipa { font-size: 14px; color: var(--mati-cafe-tierra); }
+
+.formula { display: flex; flex-wrap: wrap; gap: 12px; list-style: none; padding: 0; margin: 0; }
+.formula li {
+  flex: 1 1 200px;
+  background: var(--surface); border-radius: var(--r-card);
+  padding: 18px 20px; border-top: 6px solid var(--serie-acento);
+}
+.formula .slot { font-family: var(--font-titulo); font-weight: 600; font-size: 18px; }
+.formula .lang { font-size: 30px; display: block; margin: 4px 0; }
+.formula p { font-size: 15px; }
+
+.pairs { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); list-style: none; padding: 0; margin: 0; }
+.pairs li { background: var(--surface); border-radius: var(--r-card); padding: 14px 18px; }
+.pairs .lang { font-size: 24px; display: block; }
+/* Only the translation itself (a direct child of the item): a looser
+   selector also caught the underlined letter inside words like hñämfo̱. */
+.pairs li > span:last-child { font-size: 15px; color: var(--mati-cafe-tierra); }
+
+.block + .block { margin-top: 36px; }
+.grid-2 > .block + .block { margin-top: 0; }
+.block-title { margin-bottom: 6px; }
+.block-desc { margin-bottom: 14px; font-size: 17px; }
+.card .block-desc { font-size: 16px; }
+.change-list { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 6px; }
+.change-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; font-size: 16px; }
+.change-list .lang { font-size: 20px; }
+.change-list .arrow { color: var(--serie-acento); font-weight: 700; }
+
+table.data {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  background: var(--surface); border-radius: var(--r-card); overflow: hidden;
+  border: 1px solid var(--mati-pastel-papel-amate);
+  font-size: 16px;
+}
+table.data th, table.data td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--mati-pastel-papel-amate); }
+table.data tr:last-child td { border-bottom: 0; }
+table.data thead th { background: var(--serie-solido); color: var(--on-solid); font-family: var(--font-titulo); font-weight: 600; }
+table.data td .lang { font-size: 20px; }
+.table-scroll { overflow-x: auto; }
+
+/* Conjugator */
+/* Fields share three rows (label, box, help/letters) through subgrid, so
+   labels and boxes line up even when the text below them differs. The
+   button sits on the row of the boxes. */
+.conjugator-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)) auto;
+  grid-template-rows: auto auto auto;
+  column-gap: 16px; row-gap: 8px; align-items: start;
+  background: var(--serie-fondo); border-radius: var(--r-card-lg);
+  padding: clamp(20px, 4vw, 36px);
+}
+.conjugator-form .field { display: grid; grid-row: 1 / span 3; grid-template-rows: subgrid; min-width: 0; }
+.conjugator-form .button { grid-row: 2; align-self: center; justify-self: start; }
+.conjugator-form label { display: block; font-family: var(--font-titulo); font-weight: 600; align-self: end; }
+.conjugator-form input,
+.conjugator-form select {
+  width: 100%; height: 58px; color: var(--mati-tinta);
+  border-radius: 18px; border: 2px solid transparent; background: var(--surface);
+}
+.conjugator-form input { font: 700 24px var(--font-cuerpo); padding: 0 18px; }
+.conjugator-form select { font: 600 18px var(--font-cuerpo); padding: 0 16px; }
+.conjugator-form input:focus,
+.conjugator-form select:focus { outline: none; border-color: var(--serie-solido); }
+.conjugator-form #own-es { font-weight: 400; }
+.conjugator-form .charpad { margin-top: 0; }
+.field-help { margin: 0; }
+@media (max-width: 760px) {
+  .conjugator-form { grid-template-columns: 1fr; grid-template-rows: none; row-gap: 18px; }
+  .conjugator-form .field { grid-row: auto; grid-template-rows: auto; row-gap: 8px; }
+  .conjugator-form .button { grid-row: auto; }
+}
+.own-form { background: var(--mati-pastel-papel-amate); }
+.samples { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; list-style: none; padding: 0; }
+.samples button {
+  font: 600 15px var(--font-cuerpo); border: 1px solid var(--mati-pastel-papel-amate);
+  background: var(--surface); border-radius: 999px; padding: 6px 14px; cursor: pointer;
+  color: var(--mati-tinta);
+}
+.samples button:hover { border-color: var(--serie-solido); }
+.samples .lang { font-size: 16px; }
+.charpad { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.charpad button {
+  min-width: 40px; height: 40px; border-radius: 12px; border: 0; cursor: pointer;
+  background: var(--surface); color: var(--serie-texto);
+  font: 800 18px "Nunito Sans", "Noto Sans", sans-serif;
+}
+.charpad button:hover { background: var(--serie-solido); color: var(--on-solid); }
+
+.result-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; margin: 32px 0 8px; }
+.result-head .lang { font-size: 44px; }
+.result-note { margin-bottom: 20px; }
+.notice {
+  border-radius: var(--r-card); padding: 14px 20px; font-size: 16px;
+  background: var(--mati-pastel-papel-amate); border-left: 6px solid var(--mati-mostaza);
+}
+.notice--ok { border-left-color: var(--serie-acento); background: var(--surface); }
+.error { color: var(--error); font-weight: 700; margin-top: 12px; }
+
+.tense-group h3 { margin: 28px 0 12px; color: var(--serie-texto); }
+/* min(100%, …) keeps a column from ever being wider than the screen; each
+   table scrolls inside its card if a form is very long. */
+.tense-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); }
+.tense { min-width: 0; }
+.tense h4 { font-family: var(--font-titulo); font-weight: 600; font-size: 19px; margin: 0; }
+.tense .caption { margin: 2px 0 10px; }
+.tense table.data td { padding: 10px 14px; }
+.tense .person { font-size: 14px; color: var(--mati-cafe-tierra); }
+.tense .lang { font-size: 19px; }
+.tense .es { display: block; font-size: 14px; line-height: 1.35; color: var(--mati-cafe-tierra); margin-top: 2px; }
+.tense .clitic { color: var(--serie-acento); }
+
+.learn-more { margin-top: 32px; }
+.learn-more ul { margin: 8px 0 0; padding-left: 20px; }
+.learn-more li { margin-top: 4px; }
+.learn-more a { font-family: var(--font-titulo); font-weight: 600; color: var(--serie-texto); }
+
+.source { margin-top: 40px; font-size: 14px; color: var(--mati-cafe-tierra); }
+.source strong { color: var(--mati-tinta); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 760px) {
+  .hero .wrap { grid-template-columns: 1fr; padding-block: 40px; }
+  .hero .hero-logo { width: 160px; order: -1; }
+  .intro-card { grid-template-columns: 1fr; }
+  .site-nav a { padding: 8px 10px; font-size: 15px; }
+  .brand span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
+}
+html { scroll-behavior: smooth; }
+
+/* Buttons to switch between groups of tenses */
+.group-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 4px; }
+.group-tabs button {
+  font: 600 16px var(--font-titulo); color: var(--serie-texto);
+  background: var(--surface); border: 2px solid var(--serie-fondo);
+  border-radius: 999px; padding: 8px 16px; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.group-tabs button:hover { border-color: var(--serie-solido); }
+.group-tabs button[aria-selected="true"] { background: var(--serie-solido); border-color: var(--serie-solido); color: var(--on-solid); }
+.group-tabs .count {
+  font: 700 12px var(--font-cuerpo); min-width: 22px; height: 22px; border-radius: 11px;
+  display: inline-grid; place-items: center; background: var(--serie-fondo); color: var(--serie-texto);
+}
+.group-tabs button[aria-selected="true"] .count { background: var(--surface); }
+
+/* ---------- Language switch (ES · EN · 中文), top right ---------- */
+.header-end { display: flex; align-items: center; gap: 12px; }
+.lang-switches { display: inline-flex; gap: 6px; }
+.lang-switch {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 44px; min-height: 36px; padding: 0 12px;
+  border: 2px solid var(--mati-cacao-rojo); border-radius: 999px;
+  font-family: var(--font-titulo); font-weight: 600; font-size: 15px; letter-spacing: .04em;
+  color: var(--mati-cacao-rojo); text-decoration: none;
+}
+.lang-switch:hover, .lang-switch:focus-visible { background: var(--mati-cacao-rojo); color: var(--mati-papel); }
+/* Light / dark theme button */
+.theme-toggle {
+  display: inline-grid; place-items: center;
+  width: 36px; height: 36px; padding: 0; cursor: pointer;
+  border: 2px solid var(--mati-cacao-rojo); border-radius: 999px;
+  background: transparent; color: var(--mati-cacao-rojo);
+}
+.theme-toggle svg { width: 18px; height: 18px; }
+.theme-toggle:hover, .theme-toggle:focus-visible { background: var(--mati-cacao-rojo); color: var(--mati-papel); }
+.theme-toggle .icon-sun { display: none; }
+[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+@media (max-width: 520px) {
+  .header-end { gap: 6px; }
+  .theme-toggle { width: 34px; height: 34px; }
+  .lang-switch { min-width: 40px; padding: 0 8px; font-size: 14px; }
+}
+/* On phones the switch stays top right, next to the logo, and the menu
+   moves to its own row underneath. */
+@media (max-width: 560px) {
+  .site-header .wrap { flex-wrap: wrap; row-gap: 4px; padding-top: 10px; padding-bottom: 8px; }
+  .header-end { display: contents; }
+  .lang-switches, .theme-toggle { order: 2; }
+  .site-nav { order: 3; flex-basis: 100%; }
+  .site-nav ul { justify-content: space-between; }
+}
+
+/* ---------- Donate (Ko-fi) ---------- */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.donate {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 36px; padding: 0 16px; border-radius: 999px;
+  background: var(--mati-mostaza); color: var(--ink-fixed);
+  font-family: var(--font-titulo); font-weight: 600; font-size: 15px;
+  text-decoration: none; white-space: nowrap;
+}
+.donate::before { content: "♥"; color: #7A2E1D; }
+.donate:hover, .donate:focus-visible { background: var(--donate-hover); }
+.site-footer .donate--footer { color: var(--ink-fixed); }
+@media (max-width: 560px) {
+  .donate { order: 2; margin-left: auto; min-height: 34px; padding: 0 12px; font-size: 14px; }
+}
+
+/* ---------- Dark theme ----------
+   <html data-theme="dark">, set before the page paints by the script in
+   each page's <head> (saved choice, or the device setting). The palette
+   keeps its names; surfaces turn dark and dark text colours turn light. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --mati-papel: #1A1311;
+  --mati-tinta: #F3EAE4;
+  --mati-cafe-tierra: #C9B3A7;
+  --mati-cacao-rojo: #F2A48A;
+  --mati-pastel-rosa-crema: #3A2420;
+  --mati-pastel-barro-claro: #3F2C27;
+  --mati-pastel-papel-amate: #3A302C;
+  --mati-pastel-espuma: #16302F;
+  --mati-pastel-brote: #1E3027;
+  --mati-pastel-lila-suave: #2C2438;
+  --mati-pastel-escarcha: #1E2A40;
+  --surface: #261C19;
+  --footer: #4A1E14;
+  --donate-hover: #E9C26A;
+  --error: #F08A6E;
+  --shadow: rgb(0 0 0 / 0.45);
+  --serie-fondo: #3A2420;
+  --serie-solido: #C1502E;
+  --serie-acento: #D9A93F;
+  --serie-texto: #F2A48A;
+}
+:root[data-theme="dark"] .hero { background: #8E3A22; }
+:root[data-theme="dark"] .hero-logo { filter: brightness(0.92); }
+[data-theme="dark"] [data-serie="mar"] { --serie-fondo: #16302F; --serie-solido: #2F6B73; --serie-acento: #3A7A6D; --serie-texto: #8FD0CF; }
+[data-theme="dark"] [data-serie="milpa"] { --serie-fondo: #1E3027; --serie-solido: #2F5D4E; --serie-acento: #DE7D2A; --serie-texto: #9FD3B4; }
+[data-theme="dark"] [data-serie="anil"] { --serie-fondo: #1E2A40; --serie-solido: #2E4A7D; --serie-acento: #C98A2E; --serie-texto: #A9C1EE; }
+[data-theme="dark"] [data-serie="ciruela"] { --serie-fondo: #33222A; --serie-solido: #683547; --serie-acento: #D9A93F; --serie-texto: #E3A9BF; }
+[data-theme="dark"] [data-serie="ocre"] { --serie-fondo: #2F2722; --serie-solido: #5A3F33; --serie-acento: #DE7D2A; --serie-texto: #E2C2A6; }
+[data-theme="dark"] [data-serie="jade"] { --serie-fondo: #173430; --serie-solido: #3A7A6D; --serie-acento: #E08C8C; --serie-texto: #93D6C4; }
+[data-theme="dark"] [data-serie="cempasuchil"] { --serie-fondo: #3A2615; --serie-solido: #9C5400; --serie-acento: #DE7D2A; --serie-texto: #F5B37A; }
+[data-theme="dark"] [data-serie="selva"] { --serie-fondo: #1E3027; --serie-solido: #2F6B73; --serie-acento: #E06A9E; --serie-texto: #8FD0B0; }
+[data-theme="dark"] [data-serie="jacaranda"] { --serie-fondo: #2C2438; --serie-solido: #4A2F5B; --serie-acento: #E08C8C; --serie-texto: #C9B3EA; }
+[data-theme="dark"] [data-serie="marisma"] { --serie-fondo: #1E2A40; --serie-solido: #2F6B73; --serie-acento: #E08C8C; --serie-texto: #A9C1EE; }
+[data-theme="dark"] [data-serie="lapacho"] { --serie-fondo: #351F2C; --serie-solido: #7A2E57; --serie-acento: #D9A93F; --serie-texto: #EBA8CB; }
+[data-theme="dark"] [data-serie="guajira"] { --serie-fondo: #3A2A1A; --serie-solido: #9C5400; --serie-acento: #E06A9E; --serie-texto: #F2C38A; }
+
+/* An old cached home.js puts the cards straight in the list: keep the grid. */
+.language-list:has(> .language-card) {
+  display: grid; gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}

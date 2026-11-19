@@ -1,0 +1,7 @@
+[package]
+name = "epi-olmec-core"
+description = "Epi-Olmec syllabary inventory and Latin-to-glyph spelling rules"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]

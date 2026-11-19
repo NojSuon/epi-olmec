@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    // Light or dark theme and page language before the first paint.
+    document.documentElement.dataset.theme = "light";
+    try {
+      if (localStorage.getItem("theme") === "dark") document.documentElement.dataset.theme = "dark";
+      if (localStorage.getItem("lang") === "en") document.documentElement.lang = "en";
+    } catch (e) {}
+  </script>
+  <title>Mati Mati · Escritura epi-olmeca</title>
+  <meta name="description" content="Escribe con el silabario epi-olmeca en columnas, cambia el color y descarga un PNG sin fondo. Tres tipografías gratuitas de Mati Mati.">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito+Sans:wght@400;700;800&family=Noto+Sans:wght@400;700&display=swap">
+  <link rel="stylesheet" href="css/mati.css?v={{v}}">
+  <link rel="stylesheet" href="css/app.css?v={{v}}">
+</head>
+<body data-serie="jacaranda">
+  <a class="skip-link" href="#teclado" data-i18n="skip">Ir al teclado</a>
+  <header class="site-header" data-site-header></header>
+
+  <main id="contenido">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="pattern-violet pattern-strip" aria-hidden="true"></div>
+      <div class="wrap">
+        <div>
+          <span class="tag" data-i18n="heroTag">Silabario epi-olmeca · 150 a.C.–450 d.C.</span>
+          <h1 id="hero-title" data-i18n="heroTitle">Escribe en epi-olmeca, de arriba abajo</h1>
+          <p data-i18n="heroText">Teclea en letras latinas y mira cómo cada sílaba se vuelve un signo. Elige uno de los tres estilos, cambia el color y descarga tu texto como PNG sin fondo.</p>
+          <p class="hero-actions">
+            <a class="button button--light" href="#teclado" data-i18n="heroCta">Empieza a escribir ↓</a>
+            <a class="button button--ghost" href="#tipografias" data-i18n="heroFonts">Descarga las tipografías</a>
+          </p>
+        </div>
+        <div class="hero-sample" aria-hidden="true"><canvas id="hero-canvas" width="260" height="320"></canvas></div>
+      </div>
+    </section>
+
+    <!-- Keyboard and preview -->
+    <section class="section" id="teclado" aria-labelledby="teclado-title">
+      <div class="wrap">
+        <h2 id="teclado-title" data-i18n="kbTitle">Teclado</h2>
+        <p class="lead" data-i18n="kbLead">Cada consonante con su vocal es un signo: <b>pa</b>, <b>tsi</b>, <b>kü</b>. Una línea nueva empieza otra columna.</p>
+
+        <div class="studio">
+          <div class="studio-input">
+            <label class="field-label" for="text" data-i18n="textLabel">Tu texto en letras latinas</label>
+            <textarea id="text" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off">tsap
+tuki 13
+[cielo] mak</textarea>
+            <p class="caption" data-i18n-html="textHelp">La <b>h</b> es el saltillo (ʔ) y <b>ts</b> una sola consonante; la <b>ü</b> también se escribe <b>v</b>. <b>[cielo]</b> pone un logograma, un número del 1 al 19 es un numeral de barras y puntos, y <b>~</b> después de una sílaba elige su forma alterna (<b>ja~</b>).</p>
+
+            <div class="mode-switch" role="radiogroup" aria-labelledby="mode-label">
+              <span id="mode-label" class="field-label" data-i18n="modeLabel">Ortografía</span>
+              <label class="chip"><input type="radio" name="mode" value="auto" checked><span data-i18n="modeAuto">Reglas epi-olmecas</span></label>
+              <label class="chip"><input type="radio" name="mode" value="literal"><span data-i18n="modeLiteral">Letra por letra</span></label>
+            </div>
+            <p class="caption" id="mode-help" data-i18n-html="modeHelpAuto">Como en las inscripciones: una consonante sin vocal repite la vocal anterior (<b>tsap</b> → tsa·pa) y <b>h j w y</b> sin vocal no se escriben.</p>
+
+            <div class="pad" id="pad" aria-label="Teclado de signos"></div>
+          </div>
+
+          <div class="studio-output">
+            <div class="toolbar" role="group" aria-label="Estilo">
+              <div class="seg" id="style-seg">
+                <button type="button" data-style="sans" aria-pressed="true"><span data-i18n="styleSans">Pal</span><small data-i18n="styleSansSub">sans</small></button>
+                <button type="button" data-style="juego" aria-pressed="false"><span data-i18n="styleJuego">Juego</span><small data-i18n="styleJuegoSub">redonda</small></button>
+                <button type="button" data-style="estela" aria-pressed="false"><span data-i18n="styleEstela">Estela</span><small data-i18n="styleEstelaSub">formal</small></button>
+              </div>
+            </div>
+
+            <div class="stage" id="stage">
+              <canvas id="canvas" aria-label="Vista previa del texto en epi-olmeca"></canvas>
+            </div>
+            <p class="caption stage-note" id="stage-note"></p>
+
+            <div class="controls">
+              <fieldset class="control control--colors">
+                <legend data-i18n="colorLabel">Color de los signos</legend>
+                <div class="swatches" id="swatches"></div>
+              </fieldset>
+              <fieldset class="control control--colors">
+                <legend data-i18n="bgLabel">Fondo</legend>
+                <div class="swatches" id="bg-swatches"></div>
+              </fieldset>
+              <label class="control">
+                <span data-i18n="sizeLabel">Tamaño</span>
+                <input type="range" id="size" min="40" max="240" value="120">
+              </label>
+              <label class="control">
+                <span data-i18n="spacingLabel">Espacio entre signos</span>
+                <input type="range" id="spacing" min="-40" max="120" value="0">
+              </label>
+              <label class="control">
+                <span data-i18n="columnLabel">Espacio entre columnas</span>
+                <input type="range" id="colgap" min="0" max="200" value="40">
+              </label>
+              <label class="control">
+                <span data-i18n="outlineLabel">Contorno</span>
+                <input type="range" id="outline" min="0" max="24" value="0">
+              </label>
+              <div class="control control--checks">
+                <label class="check"><input type="checkbox" id="rtl"><span data-i18n="rtlLabel">Columnas de derecha a izquierda</span></label>
+                <label class="check"><input type="checkbox" id="labels"><span data-i18n="labelsLabel">Mostrar la lectura junto a cada signo</span></label>
+                <label class="check"><input type="checkbox" id="guides"><span data-i18n="guidesLabel">Cartuchos (marco de cada columna)</span></label>
+              </div>
+            </div>
+
+            <div class="export">
+              <label class="control control--inline">
+                <span data-i18n="scaleLabel">Resolución</span>
+                <select id="scale">
+                  <option value="1">1×</option>
+                  <option value="2" selected>2×</option>
+                  <option value="4">4×</option>
+                </select>
+              </label>
+              <button type="button" class="button" id="download-png" data-i18n="downloadPng">Descargar PNG</button>
+              <button type="button" class="button button--soft" id="copy-png" data-i18n="copyPng">Copiar imagen</button>
+              <button type="button" class="button button--soft" id="download-svg" data-i18n="downloadSvg">Descargar SVG</button>
+              <button type="button" class="button button--soft" id="copy-text" data-i18n="copyText">Copiar texto (fuente)</button>
+              <p class="caption" id="export-status" role="status" aria-live="polite"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fonts -->
+    <section class="section" id="tipografias" aria-labelledby="fonts-title">
+      <div class="wrap">
+        <h2 id="fonts-title" data-i18n="fontsTitle">Tres tipografías</h2>
+        <p class="lead" data-i18n="fontsLead">Los 59 signos silábicos, 12 logogramas y los numerales del 1 al 19, vectorizados a partir de los dibujos originales y redibujados con una misma pluma para que todos compartan estilo.</p>
+        <div class="font-grid" id="font-grid"></div>
+        <div class="card card--blanca font-howto">
+          <h3 data-i18n="howtoTitle">Cómo escribir con la fuente en otros programas</h3>
+          <ul>
+            <li data-i18n-html="howto1">Instala el archivo <b>.ttf</b>. Las ligaduras convierten lo que tecleas: <b>pa</b>, <b>tsa</b>, <b>hu</b>, <b>kv</b> o <b>kü</b>.</li>
+            <li data-i18n-html="howto2">Logogramas entre corchetes: <b>[sky]</b> o <b>[cielo]</b>. Numerales con almohadilla: <b>#13</b>.</li>
+            <li data-i18n-html="howto3">Para escribir en columnas usa texto vertical (en CSS: <code>writing-mode: vertical-lr; text-orientation: upright</code>). Cada signo ocupa su propia altura.</li>
+            <li data-i18n-html="howto4">El botón <b>Copiar texto (fuente)</b> copia los signos como caracteres de uso privado (U+E000…), que se ven bien con cualquiera de las tres fuentes aunque las ligaduras estén apagadas.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- About the script -->
+    <section class="section" id="escritura" aria-labelledby="about-title">
+      <div class="wrap">
+        <h2 id="about-title" data-i18n="aboutTitle">Sobre la escritura</h2>
+        <div class="grid-2 about">
+          <div class="card">
+            <h3 data-i18n="about1Title">Una escritura mixe-zoque</h3>
+            <p data-i18n="about1">La escritura epi-olmeca o istmeña se usó en el sur de Veracruz y Chiapas entre el 150 a.C. y el 450 d.C. Su texto más largo es la estela de La Mojarra. Terrence Kaufman y John Justeson la leen como una forma antigua de lengua zoque.</p>
+          </div>
+          <div class="card">
+            <h3 data-i18n="about2Title">Columnas de arriba abajo</h3>
+            <p data-i18n="about2">Los signos se escriben en columnas que se leen de arriba abajo y de izquierda a derecha. Mezcla logogramas (palabras) con signos silábicos de consonante y vocal.</p>
+          </div>
+          <div class="card">
+            <h3 data-i18n="about3Title">11 consonantes, 6 vocales</h3>
+            <p data-i18n-html="about3">Consonantes <b>p t ts k h s j m n w y</b> (la <b>h</b> es el saltillo, /ʔ/) y vocales <b>i e ü a u o</b> (<b>ü</b> es una vocal central, /ɨ/). Hoy se conocen los signos de 53 de las 66 sílabas posibles; las que faltan se muestran como ◌.</p>
+          </div>
+          <div class="card">
+            <h3 data-i18n="about4Title">Cómo se deletrea</h3>
+            <p data-i18n-html="about4">Una consonante final se escribe con la sílaba que repite la vocal anterior (<b>tsap</b> “cielo” → tsa·pa). <b>h j w y</b> no se escriben antes de otra consonante, y <b>k</b> no se escribe antes de <b>s</b>.</p>
+          </div>
+        </div>
+        <p class="source" data-i18n-html="sources"><strong>Fuentes.</strong> Terrence Kaufman y John Justeson, <i>Epi-Olmec Hieroglyphic Writing and Texts</i> (2001), figura 4 y §1–2. Tabla del silabario redibujada a partir de esa figura. Aquí se escribe <b>h</b> por su <b>7</b> (ʔ) y <b>ts</b> por su <b>tz</b>. Las lecturas son las de los autores y algunas son tentativas.</p>
+      </div>
+    </section>
+
+    <section class="cta" aria-labelledby="cta-title">
+      <div class="wrap">
+        <div class="cta-card">
+          <div>
+            <h2 id="cta-title" data-i18n="ctaTitle">¡Cuéntanos!</h2>
+            <p data-i18n="ctaText">¿Qué escribiste en epi-olmeca? Compártelo y etiquétanos.</p>
+          </div>
+          <a class="button" href="https://www.instagram.com/matidemati" rel="noopener" data-i18n="ctaButton">Escríbenos en Instagram</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-site-footer></footer>
+
+  <script type="module" src="js/app.js?v={{v}}"></script>
+</body>
+</html>

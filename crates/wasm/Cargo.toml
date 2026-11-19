@@ -1,0 +1,13 @@
+[package]
+name = "epi-olmec-wasm"
+description = "WebAssembly bindings so the spelling engine runs in the browser"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+epi-olmec-core.workspace = true
+# Keep in sync with the wasm-bindgen-cli version in .github/workflows/pages.yml
+wasm-bindgen = "=0.2.100"

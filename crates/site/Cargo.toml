@@ -1,0 +1,8 @@
+[package]
+name = "epi-olmec-site"
+description = "Builds the static site into dist/ (and serves it locally with --serve)"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+tiny_http = "0.12"
